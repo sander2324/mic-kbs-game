@@ -27,7 +27,7 @@ void setup() {
 
 } // Init function.
 
-void loop() {};
+void loop() {}; // Unused function for Arduino compiler.
 
 #ifndef ARDUINOMODE
 int main() {
