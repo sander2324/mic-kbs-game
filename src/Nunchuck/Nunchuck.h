@@ -1,9 +1,9 @@
 #ifndef NUNCHUCK_H
 #define NUNCHUCK_H
 
-#define NUNCHUCK_DEBUG 0
+#define NUNCHUCK_DEBUG 1
 
-#define NUNCHUCK_CHUNK_LENGTH 32
+#define NUNCHUCK_BUFFER_LENGTH 3
 
 #define NUNCHUCK_STATE_ADDR 0x00
 #define NUNCHUCK_CALIBRATION_ADDR 0x20
@@ -18,11 +18,14 @@ enum NunchuckJoystickState {
     DOWN,
     LEFT,
     RIGHT,
+    CENTER,
 };
 
 
 struct NunchuckState {
-    NunchuckJoystickState joystick_state;
+    NunchuckJoystickState joystick_state : 3;
+    bool z_pressed : 1;
+    bool c_pressed : 1;
 };
 
 

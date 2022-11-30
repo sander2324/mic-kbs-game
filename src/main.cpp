@@ -36,5 +36,7 @@ int main() {
 
     NunchuckState nunchuck_state = Nunchuck.get_state();
 
+    Serial.println(sizeof(nunchuck_state));
+
     return 0;
 }

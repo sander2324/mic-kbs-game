@@ -10,7 +10,7 @@
 NunchuckClass::NunchuckClass() {}
 
 
-uint8_t NunchuckClass::buffer[NUNCHUCK_CHUNK_LENGTH];
+uint8_t NunchuckClass::buffer[NUNCHUCK_BUFFER_LENGTH];
 
 
 void NunchuckClass::set_nunchuck_zero() {
@@ -36,6 +36,24 @@ void NunchuckClass::begin(uint8_t twi_address) {
 
 
 void NunchuckClass::set_buffer() {
+    uint8_t buffer_index = 0;
+    Wire.requestFrom(twi_address, 6);
+    for (uint8_t i = 0; i < 6 && Wire.available(); i++) {
+        if (i == 0 || i == 1 || i == 5) {
+            this->buffer[buffer_index] = Wire.read();
+            buffer_index += 1;
+        } else {
+            Wire.read();
+        }
+    }
+
+    // Process buffer.
+
+
+
+    uint8_t z_button = (this->buffer[2]>>0) & 1;
+    uint8_t c_button = (this->buffer[2]>>1) & 1;
+
     this->set_nunchuck_zero(); // Reset nunchuck data after read
 }
 
@@ -46,6 +64,8 @@ NunchuckState NunchuckClass::get_state() {
 
     return NunchuckState {
         NunchuckJoystickState::UP,      // Joystick state
+        true,                           // Z pressed
+        true,                           // C pressed
     };
 }
 
@@ -63,6 +83,7 @@ const char* get_joystick_state_screen_name(NunchuckState state) {
 void NunchuckClass::print_state() {
     Serial.print("Joystick state: ");
     Serial.println(get_joystick_state_screen_name(this->get_state()));
+    Serial.println(sizeof(this->get_state()));
     Serial.flush();
 }
 #endif
