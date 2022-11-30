@@ -36,15 +36,12 @@ void NunchuckClass::begin(uint8_t twi_address) {
 
 
 void NunchuckClass::set_buffer() {
+
     uint8_t buffer_index = 0;
+    int8_t buffer;
     Wire.requestFrom(twi_address, 6);
     for (uint8_t i = 0; i < 6 && Wire.available(); i++) {
-        if (i == 0 || i == 1 || i == 5) {
-            this->buffer[buffer_index] = Wire.read();
-            buffer_index += 1;
-        } else {
-            Wire.read();
-        }
+
     }
 
     // Process buffer.
@@ -59,8 +56,50 @@ void NunchuckClass::set_buffer() {
 
 
 NunchuckState NunchuckClass::get_state() {
-    this->set_buffer();
+    NunchuckState result;
+    uint8_t buffer_index = 0;
+    uint8_t buffer;
+    Wire.requestFrom(twi_address, 6);
+    for (uint8_t i = 0; i < 6 && Wire.available(); i++) {
+        buffer = Wire.read();
+        switch (i)
+            {
+          case 0: {
+            // Process joystick_x data.
+            //if (outbuf[0] >= 70||(outbuf[0] < 0 && outbuf[0] <= -120)) {joy_x_axis = 0;} else if (outbuf[0] < 70 && outbuf[0] >= 0) {joy_x_axis = 1;} else {joy_x_axis = -1;} // Process X input data by setting bit.
+            if (buffer<70) {
+                result.joystick_state = NunchuckJoystickState::LEFT;
+            } else if (buffer <= 192) {
+                result.joystick_state = NunchuckJoystickState::CENTER;
+            } else if (buffer > 192) {
+                result.joystick_state = NunchuckJoystickState::RIGHT;
+            }
+            break;
+          }
 
+
+          case 1: {
+            if (buffer<70) {
+                result.joystick_state = NunchuckJoystickState::UP;
+            } else if (buffer <= 192) {
+                // Do nothing, as it's left, right or center.
+            } else if (buffer > 192) {
+                result.joystick_state = NunchuckJoystickState::DOWN;
+            }
+              break;
+          }
+
+          case 5: {
+
+              break;
+          }
+
+
+          default:
+
+              break;
+        }
+    }
 
     return NunchuckState {
         NunchuckJoystickState::UP,      // Joystick state
