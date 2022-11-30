@@ -3,7 +3,7 @@
 
 #define NUNCHUCK_DEBUG 1
 
-#define NUNCHUCK_BUFFER_LENGTH 3
+#define NUNCHUCK_BUFFER_LENGTH 6
 
 #define NUNCHUCK_STATE_ADDR 0x00
 #define NUNCHUCK_CALIBRATION_ADDR 0x20
@@ -38,8 +38,8 @@ class NunchuckClass {
 
     private:
         uint8_t twi_address;
-        static uint8_t buffer[];
-        void set_buffer();
+        NunchuckJoystickState get_nunchuck_joystick_state(uint8_t x, uint8_t y);
+        void get_nunchuck_data_buffer(uint8_t* buffer);
 
 #if NUNCHUCK_DEBUG
     public:

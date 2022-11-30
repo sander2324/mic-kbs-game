@@ -10,9 +10,6 @@
 NunchuckClass::NunchuckClass() {}
 
 
-uint8_t NunchuckClass::buffer[NUNCHUCK_BUFFER_LENGTH];
-
-
 void NunchuckClass::set_nunchuck_zero() {
     Wire.beginTransmission(twi_address);
     Wire.write(0);
@@ -35,76 +32,32 @@ void NunchuckClass::begin(uint8_t twi_address) {
 }
 
 
-void NunchuckClass::set_buffer() {
-
-    uint8_t buffer_index = 0;
-    int8_t buffer;
-    Wire.requestFrom(twi_address, 6);
-    for (uint8_t i = 0; i < 6 && Wire.available(); i++) {
-
+void NunchuckClass::get_nunchuck_data_buffer(uint8_t* buffer) {
+    Wire.requestFrom(this->twi_address, (uint8_t)NUNCHUCK_BUFFER_LENGTH);
+    for (uint8_t i = 0; i < NUNCHUCK_BUFFER_LENGTH && Wire.available(); i++) {
+        buffer[i] = Wire.read();
     }
 
-    // Process buffer.
-
-
-
-    uint8_t z_button = (this->buffer[2]>>0) & 1;
-    uint8_t c_button = (this->buffer[2]>>1) & 1;
+    // uint8_t z_button = (this->buffer[2]>>0) & 1;
+    // uint8_t c_button = (this->buffer[2]>>1) & 1;
 
     this->set_nunchuck_zero(); // Reset nunchuck data after read
 }
 
 
+NunchuckJoystickState NunchuckClass::get_nunchuck_joystick_state(uint8_t x, uint8_t y) {
+
+}
+
+
 NunchuckState NunchuckClass::get_state() {
-    NunchuckState result;
-    uint8_t buffer_index = 0;
-    uint8_t buffer;
-    Wire.requestFrom(twi_address, 6);
-    for (uint8_t i = 0; i < 6 && Wire.available(); i++) {
-        buffer = Wire.read();
-        switch (i)
-            {
-          case 0: {
-            // Process joystick_x data.
-            //if (outbuf[0] >= 70||(outbuf[0] < 0 && outbuf[0] <= -120)) {joy_x_axis = 0;} else if (outbuf[0] < 70 && outbuf[0] >= 0) {joy_x_axis = 1;} else {joy_x_axis = -1;} // Process X input data by setting bit.
-            if (buffer<70) {
-                result.joystick_state = NunchuckJoystickState::LEFT;
-            } else if (buffer <= 192) {
-                result.joystick_state = NunchuckJoystickState::CENTER;
-            } else if (buffer > 192) {
-                result.joystick_state = NunchuckJoystickState::RIGHT;
-            }
-            break;
-          }
-
-
-          case 1: {
-            if (buffer<70) {
-                result.joystick_state = NunchuckJoystickState::UP;
-            } else if (buffer <= 192) {
-                // Do nothing, as it's left, right or center.
-            } else if (buffer > 192) {
-                result.joystick_state = NunchuckJoystickState::DOWN;
-            }
-              break;
-          }
-
-          case 5: {
-
-              break;
-          }
-
-
-          default:
-
-              break;
-        }
-    }
+    uint8_t data_buffer[NUNCHUCK_BUFFER_LENGTH];
+    this->get_nunchuck_data_buffer(data_buffer);
 
     return NunchuckState {
-        NunchuckJoystickState::UP,      // Joystick state
-        true,                           // Z pressed
-        true,                           // C pressed
+        this->get_nunchuck_joystick_state(data_buffer[0], data_buffer[1]),      // Joystick state
+        true,                                                                   // Z pressed
+        true,                                                                   // C pressed
     };
 }
 
