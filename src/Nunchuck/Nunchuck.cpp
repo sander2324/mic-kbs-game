@@ -46,7 +46,14 @@ void NunchuckClass::get_nunchuck_data_buffer(uint8_t* buffer) {
 
 
 NunchuckJoystickState NunchuckClass::get_nunchuck_joystick_state(uint8_t x, uint8_t y) {
+    if (!((x < NUNCHUCK_DEADZONE_START || x > NUNCHUCK_DEADZONE_END) || (y < NUNCHUCK_DEADZONE_START || y > NUNCHUCK_DEADZONE_END))) {
+        return NunchuckJoystickState::CENTER;
+    } // Get deadzone'd
 
+    if (x < NUNCHUCK_DEADZONE_START && (y < NUNCHUCK_DEADZONE_END && y > NUNCHUCK_DEADZONE_START)) return NunchuckJoystickState::LEFT;
+    else if (x > NUNCHUCK_DEADZONE_END && (y < NUNCHUCK_DEADZONE_END && y > NUNCHUCK_DEADZONE_START)) return NunchuckJoystickState::RIGHT;
+    else if (y < NUNCHUCK_DEADZONE_START && (x < NUNCHUCK_DEADZONE_END && x > NUNCHUCK_DEADZONE_START)) return NunchuckJoystickState::DOWN;
+    else if (y > NUNCHUCK_DEADZONE_END && (x < NUNCHUCK_DEADZONE_END && x > NUNCHUCK_DEADZONE_START)) return NunchuckJoystickState::UP;
 }
 
 
@@ -69,14 +76,32 @@ const char* get_joystick_state_screen_name(NunchuckState state) {
         case NunchuckJoystickState::DOWN: return "DOWN";
         case NunchuckJoystickState::LEFT: return "LEFT";
         case NunchuckJoystickState::RIGHT: return "RIGHT";
+        case NunchuckJoystickState::CENTER: return "CENTER";
     }
 }
 
-void NunchuckClass::print_state() {
+
+void NunchuckClass::print_state() { this->print_state(false); }
+
+
+void NunchuckClass::print_state(bool print_center) {
+    NunchuckState state = this->get_state();
+
+    if (state.joystick_state == NunchuckJoystickState::CENTER && !print_center) return;
+
     Serial.print("Joystick state: ");
-    Serial.println(get_joystick_state_screen_name(this->get_state()));
-    Serial.println(sizeof(this->get_state()));
+    Serial.println(get_joystick_state_screen_name(state));
     Serial.flush();
+}
+
+
+void NunchuckClass::print_joystick_raw() {
+    uint8_t data_buffer[NUNCHUCK_BUFFER_LENGTH];
+    this->get_nunchuck_data_buffer(data_buffer);
+    Serial.print("X: ");
+    Serial.println(data_buffer[0]);
+    Serial.print("Y: ");
+    Serial.println(data_buffer[1]);
 }
 #endif
 

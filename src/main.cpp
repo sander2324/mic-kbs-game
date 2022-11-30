@@ -33,10 +33,10 @@ int main() {
     Serial.println("End");
     Serial.flush();
 
-
-    NunchuckState nunchuck_state = Nunchuck.get_state();
-
-    Serial.println(sizeof(nunchuck_state));
+    while(true) {
+        Nunchuck.print_state();
+        // Nunchuck.print_joystick_raw();
+    }
 
     return 0;
 }

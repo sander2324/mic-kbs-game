@@ -9,6 +9,9 @@
 #define NUNCHUCK_CALIBRATION_ADDR 0x20
 #define NUNCHUCK_ID_ADDR 0xFA
 
+#define NUNCHUCK_DEADZONE_START 64
+#define NUNCHUCK_DEADZONE_END 192
+
 
 #include <stdint.h>
 
@@ -44,6 +47,8 @@ class NunchuckClass {
 #if NUNCHUCK_DEBUG
     public:
         void print_state();
+        void print_state(bool print_center);
+        void print_joystick_raw();
 #endif
 };
 
