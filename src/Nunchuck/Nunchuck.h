@@ -15,15 +15,7 @@ enum NunchuckJoyDirection {
     RIGHT,
 };
 
-
-class Nunchuck {
-    public:
-        Nunchuck();
-        NunchuckJoyDirection get_current_joy_direction();
-
-    private:
-        void init();
-
-};
+NunchuckJoyDirection nunchuck_get_current_joy_direction();
+void nunchuck_init();
 
 #endif

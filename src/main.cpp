@@ -27,12 +27,12 @@ void init() {
 int main() {
     init();
     Serial.println("Begin");
-    Nunchuck nunchuck = Nunchuck();
+    nunchuck_init();
     Serial.println("End");
     Serial.flush();
 
 
-    Serial.println(nunchuck.get_current_joy_direction());
+    Serial.println(nunchuck_get_current_joy_direction());
 
     return 0;
 }

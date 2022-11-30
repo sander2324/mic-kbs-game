@@ -1,7 +1,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-class Display {
+
+class Display { // TODO: Convert to singleton
     public:
         Display();
 };

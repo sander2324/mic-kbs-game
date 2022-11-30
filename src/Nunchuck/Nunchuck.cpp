@@ -3,12 +3,7 @@
 #include <Wire.h>
 
 
-Nunchuck::Nunchuck() {
-    this->init();
-}
-
-
-void Nunchuck::init() {
+void nunchuck_init() {
     Wire.beginTransmission(NUNCHUCK_TWI_ADDR);
     Wire.write(0xF0);
     Wire.write(0x55);
@@ -16,6 +11,6 @@ void Nunchuck::init() {
 }
 
 
-NunchuckJoyDirection Nunchuck::get_current_joy_direction() {
+NunchuckJoyDirection nunchuck_get_current_joy_direction() {
     return NunchuckJoyDirection::RIGHT;
 }
