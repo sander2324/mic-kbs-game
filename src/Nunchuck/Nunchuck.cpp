@@ -14,8 +14,12 @@ uint8_t NunchuckClass::buffer[NUNCHUCK_CHUNK_LENGTH];
 
 
 void NunchuckClass::begin(uint8_t twi_address) {
+    Wire.beginTransmission(twi_address); // Begin transmission with given address via handshake, send command to disable encrypted signal.
+    Wire.write(0xF0);
+    Wire.write(0x55); // Fill Wire buffer with 0xF0, 0x55
+    Wire.endTransmission(); // Send data to Nunchuck.
     Wire.beginTransmission(twi_address);
-    Wire.write(0x40);
+    Wire.write(0xFB);
     Wire.write(0x00);
     Wire.endTransmission();
 }
