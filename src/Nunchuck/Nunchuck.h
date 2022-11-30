@@ -30,9 +30,11 @@ class NunchuckClass {
     public:
         NunchuckClass();
         void begin(uint8_t twi_address);
+        void set_nunchuck_zero();
         NunchuckState get_state();
 
     private:
+        uint8_t twi_address;
         static uint8_t buffer[];
         void set_buffer();
 
