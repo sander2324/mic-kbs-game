@@ -23,6 +23,8 @@ project("mic_kbs_game")
 # (Linux) `find src -name \*.c\*`
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/Nunchuck/Nunchuck.cpp
+    src/Display/Display.cpp
 )
 
 # Add arduino core library
