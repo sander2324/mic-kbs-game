@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <Wire.h>
 #include <HardwareSerial.h>
 
@@ -18,6 +19,7 @@ void init_twi() {
 
 
 void init() {
+    sei();
     Serial.begin(9600);
     init_registers();
     init_twi();
@@ -27,12 +29,12 @@ void init() {
 int main() {
     init();
     Serial.println("Begin");
-    nunchuck_init();
+    Nunchuck.begin(NUNCHUCK_TWI_ADDR);
     Serial.println("End");
     Serial.flush();
 
 
-    Serial.println(nunchuck_get_current_joy_direction());
+    NunchuckState nunchuck_state = Nunchuck.get_state();
 
     return 0;
 }
