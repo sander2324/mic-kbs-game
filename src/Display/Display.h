@@ -2,7 +2,7 @@
 #define DISPLAY_H
 
 
-class Display { // TODO: Convert to singleton
+class Display {
     public:
         Display();
 };
