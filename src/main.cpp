@@ -31,8 +31,9 @@ int main() {
     init();
 
     while(true) {
+#if NUNCHUCK_DEBUG
         Nunchuck.print_state();
-        // Nunchuck.print_joystick_raw();
+#endif
     }
 
     return 0;

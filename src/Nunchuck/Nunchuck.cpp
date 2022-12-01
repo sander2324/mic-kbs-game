@@ -38,9 +38,6 @@ void NunchuckClass::get_nunchuck_data_buffer(uint8_t* buffer) {
         buffer[i] = Wire.read();
     }
 
-    // uint8_t z_button = (this->buffer[2]>>0) & 1;
-    // uint8_t c_button = (this->buffer[2]>>1) & 1;
-
     this->set_nunchuck_zero(); // Reset nunchuck data after read
 }
 
@@ -80,7 +77,7 @@ bool NunchuckClass::state_changed() {
 
 
 #if NUNCHUCK_DEBUG
-const char* get_joystick_state_screen_name(NunchuckState state) {
+const char* NunchuckClass::get_joystick_state_screen_name(NunchuckState state) {
     switch (state.joystick_state) {
         case NunchuckJoystickState::UP: return "UP";
         case NunchuckJoystickState::DOWN: return "DOWN";
@@ -97,7 +94,7 @@ void NunchuckClass::print_state() {
     if (!this->state_changed()) return;
 
     Serial.print("Joystick: ");
-    Serial.print(get_joystick_state_screen_name(this->current_state));
+    Serial.print(this->get_joystick_state_screen_name(this->current_state));
     Serial.print("\t\t\t");
     Serial.print(this->current_state.joystick_state != NunchuckJoystickState::CENTER ? "\t" : "");
     Serial.print(" | \tC: ");

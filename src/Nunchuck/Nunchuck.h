@@ -1,7 +1,7 @@
 #ifndef NUNCHUCK_H
 #define NUNCHUCK_H
 
-#define NUNCHUCK_DEBUG 1
+#define NUNCHUCK_DEBUG 0
 
 #define NUNCHUCK_BUFFER_LENGTH 6
 
@@ -54,6 +54,7 @@ class NunchuckClass {
     public:
         void print_state();
         void print_joystick_raw();
+        const char* get_joystick_state_screen_name(NunchuckState state);
 #endif
 };
 
