@@ -23,15 +23,12 @@ void init() {
     Serial.begin(9600);
     init_registers();
     init_twi();
+    Nunchuck.begin(NUNCHUCK_TWI_ADDR);
 }
 
 
 int main() {
     init();
-    Serial.println("Begin");
-    Nunchuck.begin(NUNCHUCK_TWI_ADDR);
-    Serial.println("End");
-    Serial.flush();
 
     while(true) {
         Nunchuck.print_state();

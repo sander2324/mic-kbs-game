@@ -5,6 +5,9 @@
 
 #define NUNCHUCK_BUFFER_LENGTH 6
 
+#define NUNCHUCK_Z_BUTTON_SHIFT 0
+#define NUNCHUCK_C_BUTTON_SHIFT 1
+
 #define NUNCHUCK_STATE_ADDR 0x00
 #define NUNCHUCK_CALIBRATION_ADDR 0x20
 #define NUNCHUCK_ID_ADDR 0xFA
@@ -37,7 +40,10 @@ class NunchuckClass {
         NunchuckClass();
         void begin(uint8_t twi_address);
         void set_nunchuck_zero();
-        NunchuckState get_state();
+        NunchuckState current_state;
+        NunchuckState previous_state;
+        void set_state();
+        bool state_changed();
 
     private:
         uint8_t twi_address;
@@ -47,7 +53,6 @@ class NunchuckClass {
 #if NUNCHUCK_DEBUG
     public:
         void print_state();
-        void print_state(bool print_center);
         void print_joystick_raw();
 #endif
 };

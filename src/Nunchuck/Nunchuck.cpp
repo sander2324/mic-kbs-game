@@ -57,15 +57,25 @@ NunchuckJoystickState NunchuckClass::get_nunchuck_joystick_state(uint8_t x, uint
 }
 
 
-NunchuckState NunchuckClass::get_state() {
+void NunchuckClass::set_state() {
     uint8_t data_buffer[NUNCHUCK_BUFFER_LENGTH];
     this->get_nunchuck_data_buffer(data_buffer);
 
-    return NunchuckState {
+    this->previous_state = this->current_state;
+    this->current_state = {
         this->get_nunchuck_joystick_state(data_buffer[0], data_buffer[1]),      // Joystick state
-        !(data_buffer[5]>>0 & 1),                                       // Z pressed
-        !(data_buffer[5]>>1 & 1),                                       // C pressed
+        !(data_buffer[5] >> NUNCHUCK_Z_BUTTON_SHIFT & 1),                       // Z pressed
+        !(data_buffer[5] >> NUNCHUCK_C_BUTTON_SHIFT & 1),                       // C pressed
     };
+}
+
+
+bool NunchuckClass::state_changed() {
+    return (
+        this->current_state.joystick_state != this->previous_state.joystick_state
+        || this->current_state.z_pressed != this->previous_state.z_pressed
+        || this->current_state.c_pressed != this->previous_state.c_pressed
+    );
 }
 
 
@@ -81,21 +91,19 @@ const char* get_joystick_state_screen_name(NunchuckState state) {
 }
 
 
-void NunchuckClass::print_state() { this->print_state(false); }
+void NunchuckClass::print_state() {
+    this->set_state();
 
+    if (!this->state_changed()) return;
 
-void NunchuckClass::print_state(bool print_center) {
-    NunchuckState state = this->get_state();
-
-    if (state.joystick_state == NunchuckJoystickState::CENTER && !print_center && (!state.c_pressed || !state.z_pressed)) return;
-
-    Serial.print("Joystick state: ");
-    Serial.print(get_joystick_state_screen_name(state));
-    Serial.print("\t|\t");
-    Serial.print("Z: ");
-    Serial.print(state.z_pressed);
-    Serial.print("\t | \t ");
-    Serial.println(state.c_pressed);
+    Serial.print("Joystick: ");
+    Serial.print(get_joystick_state_screen_name(this->current_state));
+    Serial.print("\t\t\t");
+    Serial.print(this->current_state.joystick_state != NunchuckJoystickState::CENTER ? "\t" : "");
+    Serial.print(" | \tC: ");
+    Serial.print(this->current_state.c_pressed ? "PRESSED" : "RELEASED");
+    Serial.print("\t|\tZ: ");
+    Serial.println(this->current_state.z_pressed ? "PRESSED" : "RELEASED");
     Serial.flush();
 }
 
