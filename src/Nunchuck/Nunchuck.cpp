@@ -63,8 +63,8 @@ NunchuckState NunchuckClass::get_state() {
 
     return NunchuckState {
         this->get_nunchuck_joystick_state(data_buffer[0], data_buffer[1]),      // Joystick state
-        true,                                                                   // Z pressed
-        true,                                                                   // C pressed
+        !(data_buffer[5]>>0 & 1),                                       // Z pressed
+        !(data_buffer[5]>>1 & 1),                                       // C pressed
     };
 }
 
@@ -87,10 +87,15 @@ void NunchuckClass::print_state() { this->print_state(false); }
 void NunchuckClass::print_state(bool print_center) {
     NunchuckState state = this->get_state();
 
-    if (state.joystick_state == NunchuckJoystickState::CENTER && !print_center) return;
+    if (state.joystick_state == NunchuckJoystickState::CENTER && !print_center && (!state.c_pressed || !state.z_pressed)) return;
 
     Serial.print("Joystick state: ");
-    Serial.println(get_joystick_state_screen_name(state));
+    Serial.print(get_joystick_state_screen_name(state));
+    Serial.print("\t|\t");
+    Serial.print("Z: ");
+    Serial.print(state.z_pressed);
+    Serial.print("\t | \t ");
+    Serial.println(state.c_pressed);
     Serial.flush();
 }
 
