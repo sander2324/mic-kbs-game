@@ -5,6 +5,8 @@
 class Display {
     public:
         Display();
+        void Display_Init();
+        void Display_ShowSquare();
 };
 
 #endif
