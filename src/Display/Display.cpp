@@ -52,7 +52,7 @@ void DisplayClass::startup() {
 }
 
 
-void DisplayClass::register_init() {
+void DisplayClass::init_registers() {
     DDRB |= (1 << DDB1);
 }
 
@@ -60,7 +60,7 @@ void DisplayClass::register_init() {
 void DisplayClass::begin() {
     this->spi_settings = SPISettings(SPI_SPEED, MSBFIRST, SPI_MODE0);
     SPI.begin();
-    this->register_init();
+    this->init_registers();
 
     this->startup();
 }

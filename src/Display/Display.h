@@ -18,7 +18,7 @@ class DisplayClass {
     private:
         SPISettings spi_settings;
         void startup();
-        void register_init();
+        void init_registers();
         void send_command(uint8_t command);
         void send_command(uint8_t command, uint8_t* args, uint8_t args_len);
 };
