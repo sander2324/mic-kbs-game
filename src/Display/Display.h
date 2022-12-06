@@ -1,12 +1,29 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include <stdint.h>
+#include <avr/io.h>
+#include <SPI.h>
 
-class Display {
+#define SPI_SPEED 16000000
+#define DISPLAY_RESET_COMMAND 0x01
+
+
+class DisplayClass {
     public:
-        Display();
-        void Display_Init();
-        void Display_ShowSquare();
+        DisplayClass();
+        void begin();
+        void show_square();
+
+    private:
+        SPISettings spi_settings;
+        void startup();
+        void register_init();
+        void send_command(uint8_t command);
+        void send_command(uint8_t command, uint8_t* args, uint8_t args_len);
 };
+
+
+extern DisplayClass Display;
 
 #endif
