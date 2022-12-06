@@ -1,7 +1,9 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <Wire.h>
+// Non-required -----------
 #include <HardwareSerial.h>
+
 
 #define NUNCHUCK_TWI_ADDR 0x52
 
