@@ -1,18 +1,29 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
-#ifndef PRId8 // Test if inttypes has been included somewhere else.
-#include <inttypes.h>
-#endif
 
-class Display {
+#include <stdint.h>
+#include <avr/io.h>
+#include <SPI.h>
+
+#define SPI_SPEED 16000000
+#define DISPLAY_RESET_COMMAND 0x01
+
+
+class DisplayClass {
     public:
-        Display();
-        void Display_Init();
-        void Display_ShowSquare();
+        DisplayClass();
+        void begin();
+        void show_square();
 
     private:
-        int SPI_setup();
-        uint8_t SPI_send(uint8_t data);
+        SPISettings spi_settings;
+        void startup();
+        void register_init();
+        void send_command(uint8_t command);
+        void send_command(uint8_t command, uint8_t* args, uint8_t args_len);
 };
+
+
+extern DisplayClass Display;
 
 #endif
