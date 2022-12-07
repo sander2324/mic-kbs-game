@@ -4,8 +4,11 @@
 #include <stdint.h>
 #include <avr/io.h>
 
-#define SPI_SPEED 16000000
+#define DISPLAY_NOOP_COMMAND 0x00
 #define DISPLAY_RESET_COMMAND 0x01
+#define DISPLAY_COLUMN_ADDRESS_SET_COMMAND 0x2A
+#define DISPLAY_PAGE_ADDRESS_SET_COMMAND 0x2B
+#define DISPLAY_MEMORY_WRITE_COMMAND 0x2C
 
 
 class DisplayClass {
@@ -22,7 +25,7 @@ class DisplayClass {
         inline void spi_end();
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command);
-        void send_command(uint8_t command, uint8_t* args, uint8_t args_len);
+        template <typename T> void send_command(uint8_t command, T* args, uint8_t args_len);
 };
 
 

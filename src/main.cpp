@@ -32,6 +32,8 @@ void initialize() {
 int main() {
     initialize();
 
+    Display.show_square();
+
     while(true) {
 #if NUNCHUCK_DEBUG
         Nunchuck.print_state();

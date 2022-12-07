@@ -74,11 +74,13 @@ void DisplayClass::spi_init() {
 }
 
 
+// Initialize SPI transfer by setting SPI CS (Chip Select) to active LOW
 inline void DisplayClass::spi_begin() {
     PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
 }
 
 
+// Finalize SPI transfer by setting SPI CS (Chip Select) to active HIGH
 inline void DisplayClass::spi_end() {
     PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
 }
@@ -108,13 +110,16 @@ void DisplayClass::begin() {
 }
 
 
+// Send 8bit Display SPI command with no arguments
 void DisplayClass::send_command(uint8_t command) {
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
 }
 
 
-void DisplayClass::send_command(uint8_t command, uint8_t* args, uint8_t args_len) {
+// Send 8bit Display SPI command with T size arguments
+template <typename T>
+void DisplayClass::send_command(uint8_t command, T* args, uint8_t args_len) {
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
 
@@ -126,7 +131,16 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint8_t args_len
 
 
 void DisplayClass::show_square() {
-    // Send data via SPI to select a square and fill it with a simple byte-based data. (Effective for drawing 1 color UI elements or smaller stored sprites.)
+    uint8_t column_params[4] = {0x00, 0x00, 0xBB, 0xBB};
+    this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, column_params, 4);
+
+    uint8_t page_addr_params[4] = {0x00, 0x00, 0xBB, 0xFF};
+    this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, page_addr_params, 4);
+
+    uint16_t parameters[4] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
+    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, parameters, 4);
+
+    this->send_command(DISPLAY_NOOP_COMMAND);
 }
 
 
