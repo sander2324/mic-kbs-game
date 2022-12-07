@@ -63,7 +63,6 @@ void DisplayClass::spi_init() {
 
     SPCR = (
         (1 << SPE) // SPI Enable
-        // | (1 << SPIE) // SPI Interrupt enable
         | (1 << MSTR) // Set SPI Master mode
         | (1 << SPR1) // Spe
         | (1 << SPR0) //    ed
@@ -96,6 +95,8 @@ void DisplayClass::begin() {
     this->init_display_registers();
 
     this->startup();
+    uint8_t args[1] = {0xFF};
+    this->send_command(0x51);
 }
 
 
