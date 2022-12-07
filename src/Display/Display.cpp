@@ -74,23 +74,23 @@ void DisplayClass::spi_init() {
 }
 
 
-inline void DisplayClass::begin_spi() {
+inline void DisplayClass::spi_begin() {
     PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
 }
 
 
-inline void DisplayClass::end_spi() {
+inline void DisplayClass::spi_end() {
     PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
 }
 
 
 uint8_t DisplayClass::spi_transfer(uint8_t data) {
-    this->begin_spi();
+    this->spi_begin();
     SPDR = data; // Get transfer'd
 
     while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been send.
 
-    this->end_spi();
+    this->spi_end();
     return SPDR;
 }
 

@@ -18,8 +18,8 @@ class DisplayClass {
         void startup();
         void init_display_registers();
         void spi_init();
-        inline void begin_spi();
-        inline void end_spi();
+        inline void spi_begin();
+        inline void spi_end();
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command);
         void send_command(uint8_t command, uint8_t* args, uint8_t args_len);
