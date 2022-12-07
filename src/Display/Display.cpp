@@ -52,42 +52,67 @@ void DisplayClass::startup() {
 }
 
 
-void DisplayClass::init_registers() {
-    DDRB |= (1 << DDB1);
+void DisplayClass::spi_init() {
+    DDRB |= (
+        (1 << DDB2) // Set SPI CS (Chip Select) to output mode
+        | (1 << DDB3) // Set SPI MOSI (Master Out Slave In) to output
+        | (1 << DDB5) // Set SPI SCK (Source Clock) to output
+    );
+
+    DDRB &= ~(1 << DDB4); // Set SPI MISO (Master In Slave Out) to input
+
+    SPCR = (
+        (1 << SPE) // SPI Enable
+        // | (1 << SPIE) // SPI Interrupt enable
+        | (1 << MSTR) // Set SPI Master mode
+        | (1 << SPR1) // Spe
+        | (1 << SPR0) //    ed
+    ); // Enable SPI, set self as master, and set the clock to 'fosc/128'.
+
+    SPCR &= ~(1 << DORD); // Set SPI MSB
+
+    PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
+}
+
+
+uint8_t DisplayClass::spi_transfer(uint8_t data) {
+    PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
+    SPDR = data; // Get transfer'd
+
+    while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been send.
+
+    PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
+    return SPDR;
+}
+
+
+void DisplayClass::init_display_registers() {
+    DDRB |= (1 << DDB1); // Set DC to output mode
 }
 
 
 void DisplayClass::begin() {
-    this->spi_settings = SPISettings(SPI_SPEED, MSBFIRST, SPI_MODE0);
-    SPI.begin();
-    this->init_registers();
+    this->spi_init();
+    this->init_display_registers();
 
     this->startup();
 }
 
 
 void DisplayClass::send_command(uint8_t command) {
-    SPI.beginTransaction(this->spi_settings);
-
     PORTB &= ~(1 << PORTB1); // Set DC LOW
-    SPI.transfer(command);
-
-    SPI.endTransaction();
+    this->spi_transfer(command);
 }
 
 
 void DisplayClass::send_command(uint8_t command, uint8_t* args, uint8_t args_len) {
-    SPI.beginTransaction(this->spi_settings);
-
     PORTB &= ~(1 << PORTB1); // Set DC LOW
-    SPI.transfer(command);
+    this->spi_transfer(command);
 
     PORTB |= (1 << PORTB1); // Set DC HIGH
     for (uint8_t i = 0; i < args_len; i++) {
-        SPI.transfer(args[i]);
+        this->spi_transfer(args[i]);
     }
-
-    SPI.endTransaction();
 }
 
 
