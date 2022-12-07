@@ -78,12 +78,10 @@ void DisplayClass::spi_init() {
 
 
 uint8_t DisplayClass::spi_transfer(uint8_t data) {
-    PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
     SPDR = data; // Get transfer'd
 
     while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been send.
 
-    PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
     return SPDR;
 }
 
@@ -98,18 +96,19 @@ void DisplayClass::begin() {
     this->init_display_registers();
 
     this->startup();
-    uint8_t args[1] = {0xFF};
-    this->send_command(0x51);
 }
 
 
 void DisplayClass::send_command(uint8_t command) {
+    PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
+    PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
 }
 
 
 void DisplayClass::send_command(uint8_t command, uint8_t* args, uint8_t args_len) {
+    PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
 
@@ -117,6 +116,7 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint8_t args_len
     for (uint8_t i = 0; i < args_len; i++) {
         this->spi_transfer(args[i]);
     }
+    PORTB |= (1 << DDB2); // Set SPI CS (Chip Select) to active HIGH
 }
 
 
