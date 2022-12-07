@@ -98,8 +98,6 @@ void DisplayClass::begin() {
     this->init_display_registers();
 
     this->startup();
-    uint8_t args[1] = {0xFF};
-    this->send_command(0x51);
 }
 
 
