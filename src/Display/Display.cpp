@@ -67,11 +67,16 @@ void DisplayClass::spi_init() {
     SPCR = (
         (1 << SPE) // SPI Enable
         | (1 << MSTR) // Set SPI Master mode
-        | (1 << SPR1) // Spe
-        | (1 << SPR0) //    ed
+        | (0 << SPR1) // Spe
+        | (0 << SPR0) //    ed
     ); // Enable SPI, set self as master, and set the clock to 'fosc/128'.
 
-    SPCR &= ~(1 << DORD); // Set SPI MSB
+    SPCR &= ~(
+        (1 << DORD) // Set SPI MSB
+        | (1 << CPOL) // Set SPI leading clock edge to rising
+        | (1 << CPHA) // Sample SPI data on leading edge of the clock
+    );
+    SPSR |= (1 << SPI2X); // Double SPI speed
 
     PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
 }
@@ -90,12 +95,11 @@ inline void DisplayClass::spi_end() {
 
 
 uint8_t DisplayClass::spi_transfer(uint8_t data) {
-    this->spi_begin();
     SPDR = data; // Get transfer'd
 
+    asm volatile("nop"); // Performing a nop speeds up the wait loop by about 10%... somehow.
     while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been send.
 
-    this->spi_end();
     return SPDR;
 }
 
@@ -115,35 +119,40 @@ void DisplayClass::begin() {
 
 // Send 8bit Display SPI command with no arguments
 void DisplayClass::send_command(uint8_t command) {
+    this->spi_begin();
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
+    this->spi_end();
 }
 
 
-// Send 8bit Display SPI command with T size arguments
-template <typename T>
-void DisplayClass::send_command(uint8_t command, T* args, uint8_t args_len) {
+// Send 8bit Display SPI command with 8bit arguments
+void DisplayClass::send_command(uint8_t command, uint8_t* args, uint16_t args_len) {
+    this->spi_begin();
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
 
     PORTB |= (1 << PORTB1); // Set DC HIGH
-    for (uint8_t i = 0; i < args_len; i++) {
+    for (uint16_t i = 0; i < args_len; i++) {
         this->spi_transfer(args[i]);
     }
+    this->spi_end();
 }
 
 
 void DisplayClass::show_square() {
-    uint8_t column_params[4] = {0x00, 0x00, 0xBB, 0xBB};
+    uint8_t column_params[4] = {0x00, 40, 0x00, 56};
     this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, column_params, 4);
 
-    uint8_t page_addr_params[4] = {0x00, 0x00, 0xBB, 0xFF};
+    uint8_t page_addr_params[4] = {0x00, 40, 0x00, 56};
     this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, page_addr_params, 4);
 
-    uint16_t parameters[4] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
-    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, parameters, 4);
-
-    this->send_command(DISPLAY_NOOP_COMMAND);
+    const uint16_t size = 256;
+    uint8_t mem_params[size];
+    for (uint16_t i = 0; i < size; i += 1) {
+        mem_params[i] = 0xFF;
+    }
+    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, mem_params, size);
 }
 
 <<<<<<< HEAD
