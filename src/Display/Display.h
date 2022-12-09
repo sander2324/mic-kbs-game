@@ -9,6 +9,7 @@
 #define DISPLAY_COLUMN_ADDRESS_SET_COMMAND 0x2A
 #define DISPLAY_PAGE_ADDRESS_SET_COMMAND 0x2B
 #define DISPLAY_MEMORY_WRITE_COMMAND 0x2C
+#define DISPLAY_COLOR_SET_COMMAND 0x2D
 
 
 class DisplayClass {
@@ -25,7 +26,7 @@ class DisplayClass {
         inline void spi_end();
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command);
-        template <typename T> void send_command(uint8_t command, T* args, uint8_t args_len);
+        void send_command(uint8_t command, uint8_t* args, uint16_t args_len);
 };
 
 
