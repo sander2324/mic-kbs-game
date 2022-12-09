@@ -144,7 +144,7 @@ void DisplayClass::show_square() {
     uint8_t page_addr_params[4] = {0x00, 40, 0x00, 56};
     this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, page_addr_params, 4);
 
-    const uint16_t size = 256;
+    const uint16_t size = 511;
     uint8_t mem_params[size];
     for (uint16_t i = 0; i < size; i += 1) {
         mem_params[i] = 0xFF;
