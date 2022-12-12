@@ -137,19 +137,42 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint16_t args_le
 }
 
 
+void DisplayClass::set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end) {
+    uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
+        (column_start & 0xFF00) >> 8,
+        (column_start & 0x00FF),
+        (column_end & 0xFF00) >> 8,
+        (column_end & 0x00FF),
+    };
+    this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, params, DISPLAY_ADDRESS_PARAM_SIZE);
+
+    params[0] = (row_start & 0xFF00) >> 8;
+    params[1] = (row_start & 0x00FF);
+    params[2] = (row_end & 0xFF00) >> 8;
+    params[3] = (row_end & 0x00FF);
+    this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, params, DISPLAY_ADDRESS_PARAM_SIZE);
+}
+
+
 void DisplayClass::show_square() {
-    uint8_t column_params[4] = {0x00, 40, 0x00, 56};
-    this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, column_params, 4);
-
-    uint8_t page_addr_params[4] = {0x00, 40, 0x00, 56};
-    this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, page_addr_params, 4);
-
-    const uint16_t size = 511;
+    this->set_address_window(0, 320, 0, 280);
+    const uint32_t size = 0x7D00;
     uint8_t mem_params[size];
-    for (uint16_t i = 0; i < size; i += 1) {
+    for (uint32_t i = 0; i < size; i += 1) {
         mem_params[i] = 0xFF;
     }
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, mem_params, size);
+
+
+
+
+    // uint8_t column_params[4] = {0x00, 40, 0x00, 56};
+    // this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, column_params, 4);
+
+    // uint8_t page_addr_params[4] = {0x00, 40, 0x00, 56};
+    // this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, page_addr_params, 4);
+
+    // this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, mem_params, size);
 }
 
 

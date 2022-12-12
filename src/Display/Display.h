@@ -11,6 +11,8 @@
 #define DISPLAY_MEMORY_WRITE_COMMAND 0x2C
 #define DISPLAY_COLOR_SET_COMMAND 0x2D
 
+#define DISPLAY_ADDRESS_PARAM_SIZE 4
+
 
 class DisplayClass {
     public:
@@ -27,6 +29,14 @@ class DisplayClass {
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command);
         void send_command(uint8_t command, uint8_t* args, uint16_t args_len);
+        void set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end);
+        void fill_rect(
+            uint16_t column_start,
+            uint16_t column_end,
+            uint16_t row_start,
+            uint16_t row_end,
+            uint16_t color
+        );
 };
 
 
