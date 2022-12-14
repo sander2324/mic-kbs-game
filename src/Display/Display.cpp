@@ -98,7 +98,7 @@ uint8_t DisplayClass::spi_transfer(uint8_t data) {
     SPDR = data; // Get transfer'd
 
     asm volatile("nop"); // Performing a nop speeds up the wait loop by about 10%... somehow.
-    while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been send.
+    while(!(SPSR & (1 << SPIF))); // Hold program until SPI has been sent.
 
     return SPDR;
 }
