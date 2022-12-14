@@ -139,10 +139,10 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint16_t args_le
 
 void DisplayClass::set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end) {
     uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
-        (column_start & 0xFF00) >> 8,
-        (column_start & 0x00FF),
-        (column_end & 0xFF00) >> 8,
-        (column_end & 0x00FF),
+        (uint8_t)((column_start & 0xFF00) >> 8),
+        (uint8_t)((column_start & 0x00FF)),
+        (uint8_t)((column_end & 0xFF00) >> 8),
+        (uint8_t)((column_end & 0x00FF)),
     };
     this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, params, DISPLAY_ADDRESS_PARAM_SIZE);
 
