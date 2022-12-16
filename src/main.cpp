@@ -39,11 +39,11 @@ void initialize() {
 int main() {
     initialize();
 
-    Display.show_square();
+    Display.fill_screen_slow(0xF8F8);
     // Display.fill_screen(0xF8F8);
 
-    Display.draw_rect(100, 110, 100, 110, 0xFFFF);
-    Display.draw_rect(90, 100, 90, 100, 0xFFFF);
+    Display.draw_shape(100, 110, 100, 110, 0xFFFF);
+    Display.draw_shape(90, 100, 90, 100, 0xFFFF);
 
 #if NUNCHUCK_DEBUG
     while(true) {

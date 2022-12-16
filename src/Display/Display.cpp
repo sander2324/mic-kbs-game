@@ -118,12 +118,14 @@ void DisplayClass::begin() {
 
 
 // Send 8bit Display SPI command with no arguments
-void DisplayClass::send_command(uint8_t command) {
+void DisplayClass::send_command(uint8_t command, bool end_spi_after_command = true) {
     this->spi_begin();
     PORTB &= ~(1 << PORTB1); // Set DC LOW
     this->spi_transfer(command);
     PORTB |= (1 << PORTB1); // Set DC HIGH
-    this->spi_end();
+    if (end_spi_after_command) {
+        this->spi_end();
+    }
 }
 
 
@@ -159,11 +161,11 @@ void DisplayClass::set_address_window(uint16_t column_start, uint16_t column_end
 
 
 void DisplayClass::fill_screen(uint16_t color) {
-
+    this->draw_shape(0, DISPLAY_COLUMN_PIXEL_AMOUNT, 0, DISPLAY_ROW_PIXEL_AMOUNT, color);
 }
 
 
-void DisplayClass::draw_rect(
+void DisplayClass::draw_shape(
     uint16_t column_start,
     uint16_t column_end,
     uint16_t row_start,
@@ -172,38 +174,39 @@ void DisplayClass::draw_rect(
 ) {
     this->set_address_window(column_start, column_end, row_start, row_end);
 
-    const uint32_t mem_param_size = ((column_end - column_start) * (row_end - row_start)) * 2;
+    const uint32_t pixels = ((column_end - column_start) * (row_end - row_start)) * 2;
 
-    uint8_t mem_params[mem_param_size];
-    for (uint32_t i = 0; i < mem_param_size; i += 2) {
-        mem_params[i] = ((color & 0xFF00) >> 8);
-        mem_params[i+ 1] = (color & 0x00FF);
+    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
+    for (uint32_t i = 0; i < pixels; i += 2) {
+        this->spi_transfer((color & 0xFF00) >> 8);
+        this->spi_transfer(color & 0x00FF);
     }
-    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, mem_params, mem_param_size);
+    this->spi_end();
 }
 
 
-void DisplayClass::show_square() {
+void DisplayClass::fill_screen_slow(uint16_t color) {
     for (uint16_t column = 0; column < DISPLAY_COLUMN_PIXEL_AMOUNT; column += 10) {
         for (uint16_t row = 0; row < DISPLAY_ROW_PIXEL_AMOUNT; row += 10) {
             this->set_address_window(column, column + 10, row, row + 10);
 
-            uint16_t size = 220;
-            uint8_t mem_params[size];
-            for (uint16_t i = 0; i < size; i++) {
-                mem_params[i] = 0xF8;
+            const uint16_t size = 220;
+            this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
+            for (uint16_t i = 0; i < size; i += 2) {
+                this->spi_transfer(color & 0xFF00 >> 8);
+                this->spi_transfer(color & 0x00FF);
             }
-            this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, mem_params, size);
+            this->spi_end();
         }
     }
 
-    this->set_address_window(32, 32+ 16, 32, 32 +16);
-    uint16_t size = 544;
-    uint8_t mem_params[size];
-    for (uint16_t i = 0; i < size; i++) {
-        mem_params[i] = 0xFF;
-    }
-    this->send_command(DISPLAY_ADDRESS_PARAM_SIZE);
+    // this->set_address_window(32, 32+ 16, 32, 32 +16);
+    // uint16_t size = 544;
+    // uint8_t mem_params[size];
+    // for (uint16_t i = 0; i < size; i++) {
+    //     mem_params[i] = 0xFF;
+    // }
+    // this->send_command(DISPLAY_ADDRESS_PARAM_SIZE);
 }
 
 <<<<<<< HEAD
