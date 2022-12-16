@@ -12,6 +12,8 @@
 #define DISPLAY_COLOR_SET_COMMAND 0x2D
 
 #define DISPLAY_ADDRESS_PARAM_SIZE 4
+#define DISPLAY_COLUMN_PIXEL_AMOUNT 240
+#define DISPLAY_ROW_PIXEL_AMOUNT 320
 
 
 class DisplayClass {
@@ -19,6 +21,14 @@ class DisplayClass {
         DisplayClass();
         void begin();
         void show_square();
+        void fill_screen(uint16_t color);
+        void draw_rect(
+            uint16_t column_start,
+            uint16_t column_end,
+            uint16_t row_start,
+            uint16_t row_end,
+            uint16_t color
+        );
 
     private:
         void startup();
@@ -28,15 +38,8 @@ class DisplayClass {
         inline void spi_end();
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command);
-        void send_command(uint8_t command, uint8_t* args, uint16_t args_len);
+        void send_command(uint8_t command, uint8_t* args, uint32_t args_len);
         void set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end);
-        void fill_rect(
-            uint16_t column_start,
-            uint16_t column_end,
-            uint16_t row_start,
-            uint16_t row_end,
-            uint16_t color
-        );
 };
 
 
