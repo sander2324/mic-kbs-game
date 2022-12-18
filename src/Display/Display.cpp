@@ -5,8 +5,6 @@
 
 #include <util/delay.h>
 
-#include <HardwareSerial.h>
-
 
 DisplayClass::DisplayClass() {}
 
@@ -114,9 +112,6 @@ void DisplayClass::init_display_registers() {
 void DisplayClass::begin() {
     this->spi_init();
     this->init_display_registers();
-
-    Serial.begin(9600); // TODO: Remove
-
     this->startup();
 }
 
@@ -169,6 +164,12 @@ void DisplayClass::fill_screen(uint16_t color) {
 }
 
 
+inline void DisplayClass::transfer_pixel_spi(uint16_t col, uint16_t row, uint16_t color) {
+    this->spi_transfer((color & 0xFF00) >> 8);
+    this->spi_transfer(color & 0x00FF);
+}
+
+
 void DisplayClass::fill_rect(
     uint16_t column_start,
     uint16_t row_start,
@@ -178,32 +179,13 @@ void DisplayClass::fill_rect(
 ) {
     this->set_address_window(column_start, row_start, column_end, row_end);
 
-    const uint32_t pixels = ((column_end - column_start) * (row_end - row_start)) * 2;
-    Serial.println(pixels);
-
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
-    for (uint32_t i = 0; i < pixels; i += 2) {
-        this->spi_transfer((color & 0xFF00) >> 8);
-        this->spi_transfer(color & 0x00FF);
-    }
-    this->spi_end();
-}
-
-
-void DisplayClass::fill_screen_slow(uint16_t color) {
-    for (uint16_t column = 0; column < DISPLAY_COLUMN_PIXEL_AMOUNT; column += 10) {
-        for (uint16_t row = 0; row < DISPLAY_ROW_PIXEL_AMOUNT; row += 10) {
-            this->set_address_window(column, row, column + 10, row + 10);
-
-            const uint16_t size = 220;
-            this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
-            for (uint16_t i = 0; i < size; i += 2) {
-                this->spi_transfer(color & 0xFF00 >> 8);
-                this->spi_transfer(color & 0x00FF);
-            }
-            this->spi_end();
+    for (uint16_t col = column_start; col <= column_end; col += 1) {
+        for (uint16_t row = row_start; row <= row_end; row += 1) {
+            this->transfer_pixel_spi(col, row, color);
         }
     }
+    this->spi_end();
 }
 
 <<<<<<< HEAD
