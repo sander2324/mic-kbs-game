@@ -164,7 +164,7 @@ void DisplayClass::fill_screen(uint16_t color) {
 }
 
 
-inline void DisplayClass::transfer_pixel_spi(uint16_t col, uint16_t row, uint16_t color) {
+inline void DisplayClass::transfer_pixel_color_spi(uint16_t color) {
     this->spi_transfer((color & 0xFF00) >> 8);
     this->spi_transfer(color & 0x00FF);
 }
@@ -182,7 +182,7 @@ void DisplayClass::fill_rect(
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
     for (uint16_t col = column_start; col <= column_end; col += 1) {
         for (uint16_t row = row_start; row <= row_end; row += 1) {
-            this->transfer_pixel_spi(col, row, color);
+            this->transfer_pixel_color_spi(color);
         }
     }
     this->spi_end();
