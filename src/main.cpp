@@ -38,11 +38,30 @@ void initialize() {
 int main() {
     initialize();
 
-    Display.fill_screen_slow(0x0000);
     Display.fill_screen(0xF8F8);
+    Display.fill_rect(5, 5, 5, 132, 0xFFFF);
+    Display.fill_rect(10, 5, 10, 132, 0xFFFF);
+    Display.fill_rect(15, 5, 15, 132, 0xFFFF);
+    Display.fill_rect(20, 5, 20, 132, 0xFFFF);
+    Display.fill_rect(25, 5, 25, 132, 0xFFFF);
 
-    Display.fill_rect(100, 100, 110, 110, 0xFFFF);
-    Display.fill_rect(90, 90, 100, 100, 0xFFFF);
+
+    uint16_t square_color;
+    while (true) {
+        Nunchuck.set_state();
+
+        if (!Nunchuck.state_changed()) continue;
+
+        square_color = 0xFFFF;
+        if (Nunchuck.current_state.z_pressed) {
+            square_color = 0xEEEE;
+        }
+        else if (Nunchuck.current_state.c_pressed) {
+            square_color = 0xDDDE;
+        }
+
+        Display.fill_rect(100, 100, 132, 132, square_color);
+    }
 
 #if NUNCHUCK_DEBUG
     while(true) {
