@@ -22,10 +22,10 @@ class DisplayClass {
         void begin();
         void fill_screen_slow(uint16_t color);
         void fill_screen(uint16_t color);
-        void draw_shape(
+        void fill_rect(
             uint16_t column_start,
-            uint16_t column_end,
             uint16_t row_start,
+            uint16_t column_end,
             uint16_t row_end,
             uint16_t color
         );
@@ -39,7 +39,7 @@ class DisplayClass {
         uint8_t spi_transfer(uint8_t data);
         void send_command(uint8_t command, bool end_spi_after_command = true);
         void send_command(uint8_t command, uint8_t* args, uint32_t args_len);
-        void set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end);
+        void set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end);
 };
 
 

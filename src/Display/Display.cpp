@@ -2,6 +2,8 @@
 
 #include <util/delay.h>
 
+#include <HardwareSerial.h>
+
 
 DisplayClass::DisplayClass() {}
 
@@ -110,6 +112,8 @@ void DisplayClass::begin() {
     this->spi_init();
     this->init_display_registers();
 
+    Serial.begin(9600); // TODO: Remove
+
     this->startup();
 }
 
@@ -140,7 +144,7 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint32_t args_le
 }
 
 
-void DisplayClass::set_address_window(uint16_t column_start, uint16_t column_end, uint16_t row_start, uint16_t row_end) {
+void DisplayClass::set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end) {
     uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
         (uint8_t)((column_start & 0xFF00) >> 8),
         (uint8_t)((column_start & 0x00FF)),
@@ -158,20 +162,21 @@ void DisplayClass::set_address_window(uint16_t column_start, uint16_t column_end
 
 
 void DisplayClass::fill_screen(uint16_t color) {
-    this->draw_shape(0, DISPLAY_COLUMN_PIXEL_AMOUNT, 0, DISPLAY_ROW_PIXEL_AMOUNT, color);
+    this->fill_rect(0, 0, DISPLAY_COLUMN_PIXEL_AMOUNT, DISPLAY_ROW_PIXEL_AMOUNT, color);
 }
 
 
-void DisplayClass::draw_shape(
+void DisplayClass::fill_rect(
     uint16_t column_start,
-    uint16_t column_end,
     uint16_t row_start,
+    uint16_t column_end,
     uint16_t row_end,
     uint16_t color
 ) {
-    this->set_address_window(column_start, column_end, row_start, row_end);
+    this->set_address_window(column_start, row_start, column_end, row_end);
 
     const uint32_t pixels = ((column_end - column_start) * (row_end - row_start)) * 2;
+    Serial.println(pixels);
 
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
     for (uint32_t i = 0; i < pixels; i += 2) {
@@ -185,7 +190,7 @@ void DisplayClass::draw_shape(
 void DisplayClass::fill_screen_slow(uint16_t color) {
     for (uint16_t column = 0; column < DISPLAY_COLUMN_PIXEL_AMOUNT; column += 10) {
         for (uint16_t row = 0; row < DISPLAY_ROW_PIXEL_AMOUNT; row += 10) {
-            this->set_address_window(column, column + 10, row, row + 10);
+            this->set_address_window(column, row, column + 10, row + 10);
 
             const uint16_t size = 220;
             this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
@@ -196,14 +201,6 @@ void DisplayClass::fill_screen_slow(uint16_t color) {
             this->spi_end();
         }
     }
-
-    // this->set_address_window(32, 32+ 16, 32, 32 +16);
-    // uint16_t size = 544;
-    // uint8_t mem_params[size];
-    // for (uint16_t i = 0; i < size; i++) {
-    //     mem_params[i] = 0xFF;
-    // }
-    // this->send_command(DISPLAY_ADDRESS_PARAM_SIZE);
 }
 
 
