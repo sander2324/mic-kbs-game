@@ -3,6 +3,22 @@
 #include <util/delay.h>
 
 
+// Helper functions
+#define max(a, b)            \
+({                           \
+    __typeof__ (a) _a = (a); \
+    __typeof__ (b) _b = (b); \
+    _a > _b ? _a : _b;       \
+})
+
+#define min(a, b)            \
+({                           \
+    __typeof__ (a) _a = (a); \
+    __typeof__ (b) _b = (b); \
+    _a < _b ? _a : _b;       \
+})
+
+
 DisplayClass::DisplayClass() {}
 
 
@@ -91,6 +107,7 @@ inline void DisplayClass::spi_end() {
 }
 
 
+// Transfer one byte over SPI
 uint8_t DisplayClass::spi_transfer(uint8_t data) {
     SPDR = data; // Get transfer'd
 
@@ -139,6 +156,7 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint32_t args_le
 }
 
 
+// Sets the address window for the pixels to be written to
 void DisplayClass::set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end) {
     uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
         (uint8_t)((column_start & 0xFF00) >> 8),
@@ -161,12 +179,28 @@ void DisplayClass::fill_screen(uint16_t color) {
 }
 
 
+// Transfer pixel color over SPI
 inline void DisplayClass::transfer_pixel_color_spi(uint16_t color) {
+    /*
+    A color takes up 16 bits, but the SPI only transfers 8 bits at a time
+    So we split the 16-bit color up in to two 8 bit transfers
+    */
     this->spi_transfer((color & 0xFF00) >> 8);
     this->spi_transfer(color & 0x00FF);
 }
 
 
+// Set the color of a given pixel
+void DisplayClass::draw_pixel(uint16_t column, uint16_t row, uint16_t color) {
+    this->set_address_window(column, row, column, row);
+
+    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
+    this->transfer_pixel_color_spi(color);
+    this->spi_end();
+}
+
+
+// Draw a rectangle in the given boundaries and color it the given color
 void DisplayClass::draw_rectangle(
     uint16_t column_start,
     uint16_t row_start,
@@ -183,6 +217,24 @@ void DisplayClass::draw_rectangle(
         }
     }
     this->spi_end();
+}
+
+
+// Draw a circle with a given radius and color. The circle expands from the given coordinates
+void DisplayClass::draw_circle(
+    uint16_t column,
+    uint16_t row,
+    uint16_t radius,
+    uint16_t color
+) {
+    uint16_t column_min = max(column - radius, 0);
+    uint16_t column_max = min(column + radius, DISPLAY_COLUMN_PIXEL_AMOUNT);
+    uint16_t row_min = max(row - radius, 0);
+    uint16_t row_max = min(row + radius, DISPLAY_ROW_PIXEL_AMOUNT);
+
+
+
+    this->draw_pixel(column, row, color);
 }
 
 

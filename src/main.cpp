@@ -45,6 +45,7 @@ int main() {
     Display.draw_rectangle(20, 5, 20, 132, 0xFFFF);
     Display.draw_rectangle(25, 5, 25, 132, 0xFFFF);
 
+    Display.draw_circle(200, 200, 5, 0xFFFF);
 
     uint16_t square_color;
     while (true) {
