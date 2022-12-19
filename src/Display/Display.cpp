@@ -160,7 +160,7 @@ void DisplayClass::set_address_window(uint16_t column_start, uint16_t row_start,
 
 
 void DisplayClass::fill_screen(uint16_t color) {
-    this->fill_rect(0, 0, DISPLAY_COLUMN_PIXEL_AMOUNT, DISPLAY_ROW_PIXEL_AMOUNT, color);
+    this->draw_rectangle(0, 0, DISPLAY_COLUMN_PIXEL_AMOUNT, DISPLAY_ROW_PIXEL_AMOUNT, color);
 }
 
 
@@ -170,7 +170,7 @@ inline void DisplayClass::transfer_pixel_color_spi(uint16_t color) {
 }
 
 
-void DisplayClass::fill_rect(
+void DisplayClass::draw_rectangle(
     uint16_t column_start,
     uint16_t row_start,
     uint16_t column_end,
