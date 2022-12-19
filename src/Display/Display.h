@@ -21,11 +21,18 @@ class DisplayClass {
         DisplayClass();
         void begin();
         void fill_screen(uint16_t color);
+        void draw_pixel(uint16_t column, uint16_t row, uint16_t color);
         void draw_rectangle(
             uint16_t column_start,
             uint16_t row_start,
             uint16_t column_end,
             uint16_t row_end,
+            uint16_t color
+        );
+        void draw_circle(
+            uint16_t column,
+            uint16_t row,
+            uint16_t radius,
             uint16_t color
         );
 
