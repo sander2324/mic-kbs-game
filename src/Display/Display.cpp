@@ -9,7 +9,7 @@
 DisplayClass::DisplayClass() {}
 
 
-void DisplayClass::startup() {
+void DisplayClass::start_display_startup_sequence() {
     this->send_command(DISPLAY_RESET_COMMAND);
     _delay_ms(150);
 
@@ -67,15 +67,15 @@ void DisplayClass::spi_init() {
     SPCR = (
         (1 << SPE) // SPI Enable
         | (1 << MSTR) // Set SPI Master mode
-        | (0 << SPR1) // Spe
-        | (0 << SPR0) //    ed
-    ); // Enable SPI, set self as master, and set the clock to 'fosc/128'.
+    ); // Enable SPI and set self as master
 
     SPCR &= ~(
         (1 << DORD) // Set SPI MSB
         | (1 << CPOL) // Set SPI leading clock edge to rising
         | (1 << CPHA) // Sample SPI data on leading edge of the clock
-    );
+        | (1 << SPR1) // Spe
+        | (1 << SPR0) //    ed
+    ); // Set SPI bit order to MSB, sample data on leading clock edge and set the clock to 'fosc/4'.
     SPSR |= (1 << SPI2X); // Double SPI speed
 
     PORTB &= ~(1 << DDB2); // Set SPI CS (Chip Select) to active LOW
@@ -112,7 +112,7 @@ void DisplayClass::init_display_registers() {
 void DisplayClass::begin() {
     this->spi_init();
     this->init_display_registers();
-    this->startup();
+    this->start_display_startup_sequence();
 }
 
 
