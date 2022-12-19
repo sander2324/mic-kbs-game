@@ -21,7 +21,7 @@ class DisplayClass {
         DisplayClass();
         void begin();
         void fill_screen(uint16_t color);
-        void fill_rect(
+        void draw_rectangle(
             uint16_t column_start,
             uint16_t row_start,
             uint16_t column_end,
