@@ -38,7 +38,7 @@ class DisplayClass {
 
     private:
         void start_display_startup_sequence();
-        void init_display_registers();
+        inline void init_display_registers();
         void spi_init();
         inline void spi_begin();
         inline void spi_end();
