@@ -121,7 +121,7 @@ uint8_t DisplayClass::spi_transfer(uint8_t data) {
 }
 
 
-void DisplayClass::init_display_registers() {
+inline void DisplayClass::init_display_registers() {
     DDRB |= (1 << DDB1); // Set DC to output mode
 }
 
@@ -257,9 +257,11 @@ void DisplayClass::draw_circle(
     uint16_t row_min = max(row - radius, 0);
     uint16_t row_max = min(row + radius, DISPLAY_ROW_PIXEL_AMOUNT);
 
-
-
     this->draw_pixel(column, row, color);
+    this->draw_pixel(column_min, row, color);
+    this->draw_pixel(column_max, row, color);
+    this->draw_pixel(column, row_min, color);
+    this->draw_pixel(column, row_max, color);
 }
 
 
