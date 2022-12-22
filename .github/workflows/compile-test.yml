@@ -1,0 +1,25 @@
+name: Test if it compiles
+run-name: Check if compiles on {{ github.ref_name }}
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: sudo apt install build-essential g++ make gdb gcc-avr binutils-avr avr-libc avrdude cmake
+    - name: Install Arduino IDE
+      run: sudo apt install arduino
+    - name: Copy cmake files
+      run: mkdir -p ~/Arduino/etc/ && cp cmake-files/toolchain-avr.cmake ~/Arduino/etc/toolchain-avr.cmake && cp cmake-files/extratargets-avr.cmake ~/Arduino/etc/extratargets-avr.cmake
+    - name: Generate buildfiles
+      run: make buildfiles
+    - name: Compile
+      run: make hex
