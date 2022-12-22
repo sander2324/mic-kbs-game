@@ -1,0 +1,20 @@
+name: Test if it compiles
+run-name: Check if compiles on {{ github.ref_name }}
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+      run: sudo apt install build-essential g++ make gdb gcc-avr binutils-avr avr-libc avrdude cmake
+    steps:
+      - name: compile
+      run: make hex
