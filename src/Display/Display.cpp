@@ -261,10 +261,8 @@ void DisplayClass::draw_circle(
     uint16_t current_column;
     for (uint8_t i = 0; i < diameter; i++) {
         line_length_half = (sqrt(pow((float)diameter, 2.0) - pow((float)i - (float)diameter, 2.0))) / 2.0;
-        current_column = (column - radius + (i / 2)) + 1;
 
-        // line_length_half = (sqrt(pow(diameter, 2) - pow(i - diameter, 2))) / 2;
-        // current_column = column - radius + (i / 2);
+        current_column = (column - radius + (i / 2)) + 1;
         this->draw_rectangle(
             current_column,
             row - line_length_half,
@@ -293,8 +291,6 @@ void DisplayClass::invert_colors() {
         this->send_command(DISPLAY_INVERSION_ON_COMMAND);
         this->is_inverted = true;
     }
-
-    // this->send_command(DISPLAY_INVERSION_ON_COMMAND);
 }
 
 

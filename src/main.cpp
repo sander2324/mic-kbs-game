@@ -62,10 +62,12 @@ int main() {
         square_color = 0xFFFF;
         if (Nunchuck.current_state.z_pressed && !Nunchuck.current_state.c_pressed) {
             square_color = 0xEEEE;
-            Display.invert_colors();
         }
         else if (Nunchuck.current_state.c_pressed && !Nunchuck.current_state.z_pressed) {
             square_color = 0xDDDE;
+        }
+        else if (Nunchuck.current_state.joystick_state != NunchuckJoystickState::CENTER) {
+            square_color = 0x3E92;
         }
 
         Display.draw_rectangle(100, 100, 132, 132, square_color);
