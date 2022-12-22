@@ -10,6 +10,9 @@
 #define DISPLAY_PAGE_ADDRESS_SET_COMMAND 0x2B
 #define DISPLAY_MEMORY_WRITE_COMMAND 0x2C
 #define DISPLAY_COLOR_SET_COMMAND 0x2D
+#define DISPLAY_INVERSION_OFF_COMMAND 0x20
+#define DISPLAY_INVERSION_ON_COMMAND 0x21
+
 
 #define DISPLAY_ADDRESS_PARAM_SIZE 4
 #define DISPLAY_COLUMN_PIXEL_AMOUNT 240
@@ -35,6 +38,7 @@ class DisplayClass {
             uint16_t radius,
             uint16_t color
         );
+        void invert_colors();
 
     private:
         void start_display_startup_sequence();
@@ -47,6 +51,7 @@ class DisplayClass {
         void send_command(uint8_t command, bool end_spi_after_command = true);
         void send_command(uint8_t command, uint8_t* args, uint32_t args_len);
         void set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end);
+        bool is_inverted;
 };
 
 

@@ -46,7 +46,12 @@ int main() {
     Display.draw_rectangle(20, 5, 20, 132, 0xFFFF);
     Display.draw_rectangle(25, 5, 25, 132, 0xFFFF);
 
-    Display.draw_circle(200, 200, 5, 0xFFFF);
+    Display.draw_circle(200, 200, 15, 0xFFFF);
+
+    for (uint8_t i = 0; i < 10; i++) {
+        Display.invert_colors();
+        _delay_ms(75);
+    }
 
     uint16_t square_color;
     while (true) {
@@ -55,10 +60,11 @@ int main() {
         if (!Nunchuck.state_changed()) continue;
 
         square_color = 0xFFFF;
-        if (Nunchuck.current_state.z_pressed) {
+        if (Nunchuck.current_state.z_pressed && !Nunchuck.current_state.c_pressed) {
             square_color = 0xEEEE;
+            Display.invert_colors();
         }
-        else if (Nunchuck.current_state.c_pressed) {
+        else if (Nunchuck.current_state.c_pressed && !Nunchuck.current_state.z_pressed) {
             square_color = 0xDDDE;
         }
 
