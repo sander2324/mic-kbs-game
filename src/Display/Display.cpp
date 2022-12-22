@@ -15,30 +15,30 @@ void DisplayClass::start_display_startup_sequence() {
 
     uint8_t startup_commands[] = {
         // Exclusive to the Adafruit ILI
-        0xef, 3, 0x03, 0x80, 0x02,
-        0xcf, 3, 0x00, 0xC1, 0x30,
-        0xed, 4, 0x64, 0x03, 0x12, 0x81,
-        0xe8, 3, 0x85, 0x00, 0x78,
-        0xcb, 5, 0x39, 0x2C, 0x00, 0x34, 0x02,
-        0xf7, 1, 0x20,
-        0xea, 2, 0x00, 0x00,
+        DISPLAY_UNDOCUMENTED_COMMAND_1, 3, 0x03, 0x80, 0x02,
+        DISPLAY_POWER_CONTROL_B_COMMAND, 3, 0x00, 0xC1, 0x30,
+        DISPLAY_POWER_ON_SEQUENCE_CONTROL_COMMAND, 4, 0x64, 0x03, 0x12, 0x81,
+        DISPLAY_DRIVER_TIMING_CONTROL_A_COMMAND, 3, 0x85, 0x00, 0x78,
+        DISPLAY_POWER_CONTROL_A_COMMAND, 5, 0x39, 0x2C, 0x00, 0x34, 0x02,
+        DISPLAY_PUMP_RATIO_CONTROL_COMMAND, 1, 0x20,
+        DISPLAY_DRIVER_TIMING_CONTROL_B_COMMAND, 2, 0x00, 0x00,
 
-        0xc0, 1, 0x23,                                                                                      // Power control VRH[5:0]
-        0xc1, 1, 0x10,                                                                                      // Power control SAP[2:0];BT[3:0]
-        0xc5, 2, 0x3e, 0x28,                                                                                // VCM control
-        0xc7, 1, 0x86,                                                                                      // VCM control2
-        0x36, 1, 0x48,                                                                                      // Memory Access Control
-        0x37, 1, 0x00,                                                                                      // Vertical scroll zero
-        0x3a, 1, 0x55,
-        0xb1, 2, 0x00, 0x18,
-        0xb6, 3, 0x08, 0x82, 0x27,                                                                          // Display Function Control
-        0xf2, 1, 0x00,                                                                                      // 3Gamma Function Disable
-        0x26, 1, 0x01,                                                                                      // Gamma curve selected
-        0xe0, 15, 0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00, // Set Gamma
-        0xe1, 15, 0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F, // Set Gamma
-        0x11, 0x80,                                                                                         // Exit Sleep
-        0x29, 0x80,                                                                                         // Display on
-        0x00                                                                                                // End of list
+        DISPLAY_POWER_CONTROL_1_COMMAND, 1, 0x23,                                                           // Power control VRH[5:0]
+        DISPLAY_POWER_CONTROL_2_COMMAND, 1, 0x10,                                                           // Power control SAP[2:0];BT[3:0]
+        DISPLAY_VCOM_CONTROL_1_COMMAND, 2, 0x3e, 0x28,                                                      // VCM control
+        DISPLAY_VCOM_CONTROL_2_COMMAND, 1, 0x86,                                                            // VCM control2
+        DISPLAY_MEMORY_ACCESS_CONTROL_COMMAND, 1, 0x48,                                                     // Memory Access Control
+        DISPLAY_VERTICAL_SCROLLING_START_ADDRESS_COMMAND, 1, 0x00,                                          // Vertical scroll zero
+        DISPLAY_COLMOD_PIXEL_FORMAT_SET_COMMAND, 1, 0x55,
+        DISPLAY_FRAME_RATE_CONTROL_NORMAL_MODE_COMMAND, 2, 0x00, 0x18,
+        DISPLAY_FUNCTION_CONTROL_COMMAND, 3, 0x08, 0x82, 0x27,                                              // Display Function Control
+        DISPLAY_ENABLE_3G_COMMAND, 1, 0x00,                                                                 // 3Gamma Function Disable
+        DISPLAY_GAMMA_SET_COMMAND, 1, 0x01,                                                                 // Gamma curve selected
+        DISPLAY_POSITIVE_GAMMA_CORRECTION_COMMAND, 15, 0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00, // Set Gamma
+        DISPLAY_NEGATIVE_GAMMA_CORRECTION_COMMAND, 15, 0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F, // Set Gamma
+        DISPLAY_SLEEP_OUT_COMMAND, 0x80,                                                                                         // Exit Sleep
+        DISPLAY_ON_COMMAND, 0x80,                                                                           // Display on
+        DISPLAY_NOOP_COMMAND                                                                                // End of list
     };
 
     uint8_t cmd, x, numArgs;
