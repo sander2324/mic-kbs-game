@@ -47,11 +47,6 @@ int main() {
 
     Display.draw_circle(200, 200, 15, 0xFFFF);
 
-    for (uint8_t i = 0; i < 10; i++) {
-        Display.invert_colors();
-        _delay_ms(75);
-    }
-
     uint16_t square_color;
     while (true) {
         Nunchuck.set_state();
@@ -65,8 +60,13 @@ int main() {
         else if (Nunchuck.current_state.c_pressed && !Nunchuck.current_state.z_pressed) {
             square_color = 0xDDDE;
         }
-        else if (Nunchuck.current_state.joystick_state != NunchuckJoystickState::CENTER) {
+        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::UP) {
             square_color = 0x3E92;
+        } else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::DOWN) {
+            for (uint8_t i = 0; i < 10; i++) {
+                Display.invert_colors();
+                _delay_ms(75);
+            }
         }
 
         Display.draw_rectangle(100, 100, 132, 132, square_color);
