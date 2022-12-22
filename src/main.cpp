@@ -3,7 +3,6 @@
 #include <Wire.h>
 #include <util/delay.h>
 
-
 #define NUNCHUCK_TWI_ADDR 0x52
 
 #include "Nunchuck/Nunchuck.h"

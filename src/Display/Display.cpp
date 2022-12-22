@@ -212,28 +212,6 @@ void DisplayClass::draw_rectangle(
     this->spi_end();
 }
 
-<<<<<<< HEAD
-int Display::SPI_setup() {
-    // Assuming SPI_DDR = DDRB, set output correctly.
-    DDR_SPI |= (1 << CS) | (1 << MOSI) | (1 << SCK);
-    // Enable SPI, set self as master, and set the clock to 'fosc/128'.
-    SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
-
-    // SPI pins should now be ready. Writing data into SPDR should make it auto-trigger & sent said data over SPI.
-
-    // Since there's only 1 SPI slave device, we set CS to low by standard.
-    DDR_SPI &= ~(1 << CS);
-}
-
-uint8_t Display::SPI_send(uint8_t data) {
-    SPDR = data; // Send data into SPDR, ATMega will automatically dial it out.
-
-    // Hold program until SPI has been send.
-    while(!(SPSR & (1<<SPIF)));
-
-    return SPDR;
-}
-=======
 
 // Draw a circle with a given radius and color. The given coordinates are the center of the circle
 void DisplayClass::draw_circle(
@@ -282,4 +260,3 @@ void DisplayClass::invert_colors() {
 
 
 DisplayClass Display = DisplayClass();
->>>>>>> Setup DisplayClass
