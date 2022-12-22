@@ -6,6 +6,7 @@
 DisplayClass::DisplayClass() {}
 
 
+// Send startup commands to the display
 void DisplayClass::start_display_startup_sequence() {
     this->send_command(DISPLAY_RESET_COMMAND);
     _delay_ms(150);
@@ -52,6 +53,7 @@ void DisplayClass::start_display_startup_sequence() {
 }
 
 
+// Initialize SPI configuration
 void DisplayClass::spi_init() {
     DDRB |= (
         (1 << DDB2) // Set SPI CS (Chip Select) to output mode
@@ -102,15 +104,17 @@ uint8_t DisplayClass::spi_transfer(uint8_t data) {
 }
 
 
-inline void DisplayClass::init_display_registers() {
+// Initialize the registers needed for the display to function
+inline void DisplayClass::init_registers() {
     DDRB |= (1 << DDB1); // Set DC to output mode
 }
 
 
+// Initialize display functionality
 void DisplayClass::begin() {
     this->is_inverted = false;
     this->spi_init();
-    this->init_display_registers();
+    this->init_registers();
     this->start_display_startup_sequence();
 }
 
@@ -159,6 +163,7 @@ void DisplayClass::set_address_window(uint16_t column_start, uint16_t row_start,
 }
 
 
+// Fill the entire screen with a solid color
 void DisplayClass::fill_screen(uint16_t color) {
     this->draw_rectangle(0, 0, DISPLAY_COLUMN_PIXEL_AMOUNT, DISPLAY_ROW_PIXEL_AMOUNT, color);
 }
@@ -205,7 +210,7 @@ void DisplayClass::draw_rectangle(
 }
 
 
-// Draw a circle with a given radius and color. The circle expands from the given coordinates
+// Draw a circle with a given radius and color. The given coordinates are the center of the circle
 void DisplayClass::draw_circle(
     uint16_t column,
     uint16_t row,
@@ -239,6 +244,7 @@ void DisplayClass::draw_circle(
 }
 
 
+// Invert all colors that are on the display right now
 void DisplayClass::invert_colors() {
     if (this->is_inverted) {
         this->send_command(DISPLAY_INVERSION_OFF_COMMAND);
