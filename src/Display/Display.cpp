@@ -19,6 +19,9 @@
 })
 
 
+bool inverted = false;
+
+
 DisplayClass::DisplayClass() {}
 
 
@@ -124,6 +127,7 @@ inline void DisplayClass::init_display_registers() {
 
 
 void DisplayClass::begin() {
+    this->is_inverted = false;
     this->spi_init();
     this->init_display_registers();
     this->start_display_startup_sequence();
@@ -227,16 +231,45 @@ void DisplayClass::draw_circle(
     uint16_t radius,
     uint16_t color
 ) {
-    uint16_t column_min = max(column - radius, 0);
-    uint16_t column_max = min(column + radius, DISPLAY_COLUMN_PIXEL_AMOUNT);
-    uint16_t row_min = max(row - radius, 0);
-    uint16_t row_max = min(row + radius, DISPLAY_ROW_PIXEL_AMOUNT);
+    uint16_t diameter = radius * 2;
+    uint16_t line_length_half;
+    uint16_t current_column;
+    for (uint8_t i = 0; i < diameter; i++) {
+        line_length_half = (sqrt(pow((float)diameter, 2.0) - pow((float)i - (float)diameter, 2.0))) / 2.0;
+        current_column = (column - radius + (i / 2)) + 1;
 
-    this->draw_pixel(column, row, color);
-    this->draw_pixel(column_min, row, color);
-    this->draw_pixel(column_max, row, color);
-    this->draw_pixel(column, row_min, color);
-    this->draw_pixel(column, row_max, color);
+        // line_length_half = (sqrt(pow(diameter, 2) - pow(i - diameter, 2))) / 2;
+        // current_column = column - radius + (i / 2);
+        this->draw_rectangle(
+            current_column,
+            row - line_length_half,
+            current_column,
+            row + line_length_half,
+            color
+        );
+
+        current_column = (column + radius - (i / 2)) - 1;
+        this->draw_rectangle(
+            current_column,
+            row - line_length_half,
+            current_column,
+            row + line_length_half,
+            color
+        );
+    }
+}
+
+
+void DisplayClass::invert_colors() {
+    if (this->is_inverted) {
+        this->send_command(DISPLAY_INVERSION_OFF_COMMAND);
+        this->is_inverted = false;
+    } else {
+        this->send_command(DISPLAY_INVERSION_ON_COMMAND);
+        this->is_inverted = true;
+    }
+
+    // this->send_command(DISPLAY_INVERSION_ON_COMMAND);
 }
 
 
