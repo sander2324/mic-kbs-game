@@ -59,15 +59,16 @@ int main() {
             square_color = 0xEEEE;
         }
         else if (Nunchuck.current_state.c_pressed && !Nunchuck.current_state.z_pressed) {
-            square_color = 0xDDDE;
-        }
-        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::UP) {
-            square_color = 0x3E92;
-        } else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::DOWN) {
-            for (uint8_t i = 0; i < 10; i++) {
+            for (uint8_t i = 0; i < 8; i++) {
                 Display.invert_colors();
                 _delay_ms(75);
             }
+        }
+        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::UP) {
+            square_color = 0x3E92;
+        }
+        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::DOWN) {
+            square_color = 0xDDDE;
         }
 
         Display.draw_rectangle(100, 100, 132, 132, square_color);
