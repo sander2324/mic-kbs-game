@@ -222,25 +222,25 @@ void DisplayClass::draw_circle(
 ) {
     uint16_t diameter = radius * 2;
     uint16_t line_length_half;
-    uint16_t current_y;
+    uint16_t current_x;
     for (uint8_t i = 0; i < diameter; i++) {
         line_length_half = (sqrt(pow((float)diameter, 2.0) - pow((float)i - (float)diameter, 2.0))) / 2.0;
 
-        current_y = (y - radius + (i / 2)) + 1;
+        current_x = (x - radius + (i / 2)) + 1;
         this->draw_rectangle(
-            x - line_length_half,
-            current_y,
-            x + line_length_half,
-            current_y,
+            current_x,
+            y - line_length_half,
+            current_x,
+            y + line_length_half,
             color
         );
 
-        current_y = (y + radius - (i / 2)) - 1;
+        current_x = (y + radius - (i / 2)) - 1;
         this->draw_rectangle(
-            x - line_length_half,
-            current_y,
-            x + line_length_half,
-            current_y,
+            current_x,
+            y - line_length_half,
+            current_x,
+            y + line_length_half,
             color
         );
     }
