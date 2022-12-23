@@ -149,19 +149,19 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint32_t args_le
 
 
 // Sets the address window for the pixels to be written to
-void DisplayClass::set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end) {
+void DisplayClass::set_address_window(uint16_t y_start, uint16_t x_start, uint16_t y_end, uint16_t x_end) {
     uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
-        (uint8_t)((column_start & 0xFF00) >> 8),
-        (uint8_t)((column_start & 0x00FF)),
-        (uint8_t)((column_end & 0xFF00) >> 8),
-        (uint8_t)((column_end & 0x00FF)),
+        (uint8_t)((y_start & 0xFF00) >> 8),
+        (uint8_t)((y_start & 0x00FF)),
+        (uint8_t)((y_end & 0xFF00) >> 8),
+        (uint8_t)((y_end & 0x00FF)),
     };
     this->send_command(DISPLAY_COLUMN_ADDRESS_SET_COMMAND, params, DISPLAY_ADDRESS_PARAM_SIZE);
 
-    params[0] = (row_start & 0xFF00) >> 8;
-    params[1] = (row_start & 0x00FF);
-    params[2] = (row_end & 0xFF00) >> 8;
-    params[3] = (row_end & 0x00FF);
+    params[0] = (x_start & 0xFF00) >> 8;
+    params[1] = (x_start & 0x00FF);
+    params[2] = (x_end & 0xFF00) >> 8;
+    params[3] = (x_end & 0x00FF);
     this->send_command(DISPLAY_PAGE_ADDRESS_SET_COMMAND, params, DISPLAY_ADDRESS_PARAM_SIZE);
 }
 
@@ -184,8 +184,8 @@ inline void DisplayClass::transfer_pixel_color_spi(uint16_t color) {
 
 
 // Set the color of a given pixel
-void DisplayClass::draw_pixel(uint16_t column, uint16_t row, uint16_t color) {
-    this->set_address_window(column, row, column, row);
+void DisplayClass::draw_pixel(uint16_t y, uint16_t x, uint16_t color) {
+    this->set_address_window(y, x, y, x);
 
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
     this->transfer_pixel_color_spi(color);
@@ -195,17 +195,17 @@ void DisplayClass::draw_pixel(uint16_t column, uint16_t row, uint16_t color) {
 
 // Draw a rectangle in the given boundaries and color it the given color
 void DisplayClass::draw_rectangle(
-    uint16_t column_start,
-    uint16_t row_start,
-    uint16_t column_end,
-    uint16_t row_end,
+    uint16_t y_start,
+    uint16_t x_start,
+    uint16_t y_end,
+    uint16_t x_end,
     uint16_t color
 ) {
-    this->set_address_window(column_start, row_start, column_end, row_end);
+    this->set_address_window(y_start, x_start, y_end, x_end);
 
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
-    for (uint16_t col = column_start; col <= column_end; col += 1) {
-        for (uint16_t row = row_start; row <= row_end; row += 1) {
+    for (uint16_t col = y_start; col <= y_end; col += 1) {
+        for (uint16_t x = x_start; x <= x_end; x += 1) {
             this->transfer_pixel_color_spi(color);
         }
     }
@@ -215,32 +215,32 @@ void DisplayClass::draw_rectangle(
 
 // Draw a circle with a given radius and color. The given coordinates are the center of the circle
 void DisplayClass::draw_circle(
-    uint16_t column,
-    uint16_t row,
+    uint16_t y,
+    uint16_t x,
     uint16_t radius,
     uint16_t color
 ) {
     uint16_t diameter = radius * 2;
     uint16_t line_length_half;
-    uint16_t current_column;
+    uint16_t current_y;
     for (uint8_t i = 0; i < diameter; i++) {
         line_length_half = (sqrt(pow((float)diameter, 2.0) - pow((float)i - (float)diameter, 2.0))) / 2.0;
 
-        current_column = (column - radius + (i / 2)) + 1;
+        current_y = (y - radius + (i / 2)) + 1;
         this->draw_rectangle(
-            current_column,
-            row - line_length_half,
-            current_column,
-            row + line_length_half,
+            current_y,
+            x - line_length_half,
+            current_y,
+            x + line_length_half,
             color
         );
 
-        current_column = (column + radius - (i / 2)) - 1;
+        current_y = (y + radius - (i / 2)) - 1;
         this->draw_rectangle(
-            current_column,
-            row - line_length_half,
-            current_column,
-            row + line_length_half,
+            current_y,
+            x - line_length_half,
+            current_y,
+            x + line_length_half,
             color
         );
     }

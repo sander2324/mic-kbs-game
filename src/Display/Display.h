@@ -46,17 +46,17 @@ class DisplayClass {
         DisplayClass();
         void begin();
         void fill_screen(uint16_t color);
-        void draw_pixel(uint16_t column, uint16_t row, uint16_t color);
+        void draw_pixel(uint16_t y, uint16_t row, uint16_t color);
         void draw_rectangle(
-            uint16_t column_start,
-            uint16_t row_start,
-            uint16_t column_end,
-            uint16_t row_end,
+            uint16_t y_start,
+            uint16_t x_start,
+            uint16_t y_end,
+            uint16_t x_end,
             uint16_t color
         );
         void draw_circle(
-            uint16_t column,
-            uint16_t row,
+            uint16_t y,
+            uint16_t x,
             uint16_t radius,
             uint16_t color
         );
@@ -72,7 +72,7 @@ class DisplayClass {
         inline void transfer_pixel_color_spi(uint16_t color);
         void send_command(uint8_t command, bool end_spi_after_command = true);
         void send_command(uint8_t command, uint8_t* args, uint32_t args_len);
-        void set_address_window(uint16_t column_start, uint16_t row_start, uint16_t column_end, uint16_t row_end);
+        void set_address_window(uint16_t y_start, uint16_t x_start, uint16_t y_end, uint16_t x_end);
         bool is_inverted;
 };
 
