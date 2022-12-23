@@ -39,11 +39,11 @@ int main() {
     initialize();
 
     Display.fill_screen(0xF8F8);
-    Display.draw_rectangle(5, 5, 5, 132, 0xFFFF);
-    Display.draw_rectangle(10, 5, 10, 132, 0xFFFF);
-    Display.draw_rectangle(15, 5, 15, 132, 0xFFFF);
-    Display.draw_rectangle(20, 5, 20, 132, 0xFFFF);
-    Display.draw_rectangle(25, 5, 25, 132, 0xFFFF);
+    Display.draw_rectangle(5, 5, 132, 5, 0xFFFF);
+    Display.draw_rectangle(5, 10, 132, 10, 0xFFFF);
+    Display.draw_rectangle(5, 15, 132, 15, 0xFFFF);
+    Display.draw_rectangle(5, 20, 132, 20, 0xFFFF);
+    Display.draw_rectangle(5, 25, 132, 25, 0xFFFF);
 
     Display.draw_circle(200, 200, 15, 0xFFFF);
 

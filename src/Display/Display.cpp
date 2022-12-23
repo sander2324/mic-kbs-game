@@ -149,7 +149,7 @@ void DisplayClass::send_command(uint8_t command, uint8_t* args, uint32_t args_le
 
 
 // Sets the address window for the pixels to be written to
-void DisplayClass::set_address_window(uint16_t y_start, uint16_t x_start, uint16_t y_end, uint16_t x_end) {
+void DisplayClass::set_address_window(uint16_t x_start, uint16_t y_start, uint16_t x_end, uint16_t y_end) {
     uint8_t params[DISPLAY_ADDRESS_PARAM_SIZE] = {
         (uint8_t)((y_start & 0xFF00) >> 8),
         (uint8_t)((y_start & 0x00FF)),
@@ -168,7 +168,7 @@ void DisplayClass::set_address_window(uint16_t y_start, uint16_t x_start, uint16
 
 // Fill the entire screen with a solid color
 void DisplayClass::fill_screen(uint16_t color) {
-    this->draw_rectangle(0, 0, DISPLAY_COLUMN_PIXEL_AMOUNT, DISPLAY_ROW_PIXEL_AMOUNT, color);
+    this->draw_rectangle(0, 0, DISPLAY_ROW_PIXEL_AMOUNT, DISPLAY_COLUMN_PIXEL_AMOUNT, color);
 }
 
 
@@ -184,8 +184,8 @@ inline void DisplayClass::transfer_pixel_color_spi(uint16_t color) {
 
 
 // Set the color of a given pixel
-void DisplayClass::draw_pixel(uint16_t y, uint16_t x, uint16_t color) {
-    this->set_address_window(y, x, y, x);
+void DisplayClass::draw_pixel(uint16_t x, uint16_t y, uint16_t color) {
+    this->set_address_window(x, y, x, y);
 
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
     this->transfer_pixel_color_spi(color);
@@ -195,17 +195,17 @@ void DisplayClass::draw_pixel(uint16_t y, uint16_t x, uint16_t color) {
 
 // Draw a rectangle in the given boundaries and color it the given color
 void DisplayClass::draw_rectangle(
-    uint16_t y_start,
     uint16_t x_start,
-    uint16_t y_end,
+    uint16_t y_start,
     uint16_t x_end,
+    uint16_t y_end,
     uint16_t color
 ) {
-    this->set_address_window(y_start, x_start, y_end, x_end);
+    this->set_address_window(x_start, y_start, x_end, y_end);
 
     this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
-    for (uint16_t col = y_start; col <= y_end; col += 1) {
-        for (uint16_t x = x_start; x <= x_end; x += 1) {
+    for (uint16_t x = x_start; x <= x_end; x += 1) {
+        for (uint16_t y = y_start; y <= y_end; y += 1) {
             this->transfer_pixel_color_spi(color);
         }
     }
@@ -215,8 +215,8 @@ void DisplayClass::draw_rectangle(
 
 // Draw a circle with a given radius and color. The given coordinates are the center of the circle
 void DisplayClass::draw_circle(
-    uint16_t y,
     uint16_t x,
+    uint16_t y,
     uint16_t radius,
     uint16_t color
 ) {
@@ -228,19 +228,19 @@ void DisplayClass::draw_circle(
 
         current_y = (y - radius + (i / 2)) + 1;
         this->draw_rectangle(
-            current_y,
             x - line_length_half,
             current_y,
             x + line_length_half,
+            current_y,
             color
         );
 
         current_y = (y + radius - (i / 2)) - 1;
         this->draw_rectangle(
-            current_y,
             x - line_length_half,
             current_y,
             x + line_length_half,
+            current_y,
             color
         );
     }
