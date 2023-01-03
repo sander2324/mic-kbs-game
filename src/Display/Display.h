@@ -7,14 +7,15 @@
 #define DISPLAY_NOOP_COMMAND 0x00
 #define DISPLAY_RESET_COMMAND 0x01
 #define DISPLAY_SLEEP_OUT_COMMAND 0x11
+#define DISPLAY_INVERSION_OFF_COMMAND 0x20
+#define DISPLAY_INVERSION_ON_COMMAND 0x21
 #define DISPLAY_GAMMA_SET_COMMAND 0x26
 #define DISPLAY_ON_COMMAND 0x29
 #define DISPLAY_COLUMN_ADDRESS_SET_COMMAND 0x2A
 #define DISPLAY_PAGE_ADDRESS_SET_COMMAND 0x2B
 #define DISPLAY_MEMORY_WRITE_COMMAND 0x2C
 #define DISPLAY_COLOR_SET_COMMAND 0x2D
-#define DISPLAY_INVERSION_OFF_COMMAND 0x20
-#define DISPLAY_INVERSION_ON_COMMAND 0x21
+#define DISPLAY_MEMORY_READ_COMMAND 0x2E
 #define DISPLAY_MEMORY_ACCESS_CONTROL_COMMAND 0x36
 #define DISPLAY_VERTICAL_SCROLLING_START_ADDRESS_COMMAND 0x37
 #define DISPLAY_COLMOD_PIXEL_FORMAT_SET_COMMAND 0x3A
@@ -47,6 +48,10 @@ class DisplayClass {
         void begin();
         void fill_screen(uint16_t color);
         void draw_pixel(uint16_t x, uint16_t y, uint16_t color);
+        uint16_t get_color_memory_from_rectangle(
+            uint16_t x,
+            uint16_t y
+        );
         void draw_rectangle(
             uint16_t x_start,
             uint16_t y_start,
@@ -61,6 +66,7 @@ class DisplayClass {
             uint16_t color
         );
         void invert_colors();
+        void draw_sprite(const uint16_t* sprite, uint16_t x, uint16_t y);
 
     private:
         void start_display_startup_sequence();

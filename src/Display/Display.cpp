@@ -4,6 +4,7 @@
 #endif
 
 #include <util/delay.h>
+#include <HardwareSerial.h>
 
 
 DisplayClass::DisplayClass() {}
@@ -244,6 +245,21 @@ void DisplayClass::draw_circle(
             color
         );
     }
+}
+
+
+// Draw a sprite array (first two entries are width and height respectively)
+void DisplayClass::draw_sprite(const uint16_t* sprite, uint16_t x, uint16_t y) {
+    // TODO Transparency
+    this->set_address_window(x, y, (x + sprite[0]), (y + sprite[1]));
+
+    const uint16_t loop_end = ((sprite[0] + 1) * (sprite[1] + 1) + 2);
+
+    this->send_command(DISPLAY_MEMORY_WRITE_COMMAND, false);
+    for (uint16_t i = 2; i < loop_end; i++) {
+        this->transfer_pixel_color_spi(sprite[i]);
+    }
+    this->spi_end();
 }
 
 
