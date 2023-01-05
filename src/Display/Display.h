@@ -41,6 +41,8 @@
 #define DISPLAY_COLUMN_PIXEL_AMOUNT 240
 #define DISPLAY_ROW_PIXEL_AMOUNT 320
 
+#define SPRITE_TRANSPARENT_COLOR 0xFFFF
+
 
 class DisplayClass {
     public:

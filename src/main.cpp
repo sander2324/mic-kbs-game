@@ -9,8 +9,6 @@
 #include "Display/Display.h"
 #include "sprites/test.h"
 
-#include <HardwareSerial.h>
-
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
 #endif
@@ -41,33 +39,19 @@ void initialize() {
 int main() {
     initialize();
 
-    // while (true) {
-    //     // Display.fill_screen(0xFFFF);
-    //     // Display.draw_rectangle(5, 5, 132, 5, 0xFFFF);
-    //     // Display.draw_rectangle(5, 10, 132, 10, 0xFFFF);
-    //     // Display.draw_rectangle(5, 15, 132, 15, 0xFFFF);
-    //     // Display.draw_rectangle(5, 20, 132, 20, 0xFFFF);
-    //     // Display.draw_rectangle(5, 25, 132, 25, 0xFFFF);
-
-    //     // Display.draw_rectangle(100, 100, 150, 150, 0x0000);
-    //     // Display.draw_rectangle(175, 100, 175 + 50, 150, 0x0001);
-
-    //     // Display.draw_circle(200, 200, 15, 0xFFFF);
-    //     // _delay_ms(500);
-
-    //     Display.fill_screen(0xFFFF);
-    //     _delay_ms(500);
-
-    //     Display.fill_screen(0xFFFE);
-    //     _delay_ms(500);
-    // }
-
     Display.fill_screen(0xF8F8);
 
-    Serial.begin(9600);
+    Display.draw_circle(190, 190, 15, 0xFFFF);
+    for (uint16_t x = 0; x <= 305; x += 16) {
+        for (uint16_t y = 0; y <= 225; y += 16) {
+            Display.draw_sprite(TEST_SPRITE, x, y);
+        }
+    }
+
+    Display.fill_screen(0xF8F8);
+    Display.draw_sprite(TEST_SPRITE, 150, 150);
 
     uint16_t square_color;
-    Display.draw_sprite(TEST_SPRITE, 150, 150);
     while (true) {
         Nunchuck.set_state();
 
