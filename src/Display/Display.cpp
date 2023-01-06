@@ -271,8 +271,9 @@ void DisplayClass::draw_sprite(
         for (uint16_t current_y = y; current_y < y_end; current_y += 1) {
             /*
             The sprite array consists of two 4 bit color indexes per 8 bit array entry
-            For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index
-            and on every odd pixel, we get the SPRITE_INDEX_SECOND_PIXEL_MASK bits of the sprite array index
+            For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index.
+            And on every odd pixel, we get the SPRITE_INDEX_SECOND_PIXEL_MASK bits of the
+            sprite array index and increment sprite_array_index to go to the nexxt array entry.
             */
             uint8_t color_index;
             if (pixel_index_is_even) {
