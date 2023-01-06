@@ -44,12 +44,12 @@ int main() {
     Display.draw_circle(190, 190, 15, 0xFFFF);
     for (uint16_t x = 0; x <= 305; x += 16) {
         for (uint16_t y = 0; y <= 225; y += 16) {
-            Display.draw_sprite(TEST_SPRITE, x, y);
+            Display.draw_sprite(TEST_SPRITE, TEST_COLORS, x, y);
         }
     }
 
     Display.fill_screen(0xF8F8);
-    Display.draw_sprite(TEST_SPRITE, 150, 150);
+    Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 150, 150);
 
     uint16_t square_color;
     while (true) {

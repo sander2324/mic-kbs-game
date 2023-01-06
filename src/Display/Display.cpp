@@ -248,18 +248,39 @@ void DisplayClass::draw_circle(
 
 
 // Draw a sprite array
-void DisplayClass::draw_sprite(const uint16_t* sprite, uint16_t x, uint16_t y) {
-    const uint16_t x_end = x + sprite[0];  // Sprite width
-    const uint16_t y_end = y + sprite[1];  // Sprite height
+void DisplayClass::draw_sprite(
+    const uint8_t* sprite,
+    const uint16_t* colors,
+    uint16_t x,
+    uint16_t y
+) {
+    const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
+    const uint16_t y_end = y + sprite[1];  // Sprite[1] == Sprite height
 
-    uint16_t current_sprite_index = 2;
+    const uint16_t sprite_size = (sprite[0] + 1) * (sprite[1] + 1);
+    uint16_t current_x = x;
+    uint16_t current_y = y;
+    uint16_t sprite_index = 2;
 
-    for (uint16_t current_x = x; current_x <= x_end; current_x += 1) {
-        for (uint16_t current_y = y; current_y <= y_end; current_y += 1) {
-            if (sprite[current_sprite_index] != SPRITE_TRANSPARENT_COLOR) {
-                this->draw_pixel(current_x, current_y, sprite[current_sprite_index]);
-            }
-            current_sprite_index += 1;
+    for (uint16_t i = 0; i < sprite_size; i++) {
+        uint8_t color_index;
+
+        if (i % 2 == 0) {
+            color_index = (sprite[sprite_index] & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
+        } else {
+            color_index = sprite[sprite_index] & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
+            sprite_index += 1;
+        }
+
+        if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
+            this->draw_pixel(current_x, current_y, colors[color_index]);
+        }
+
+        if (current_y == y_end) {
+            current_y = y;
+            current_x += 1;
+        } else {
+            current_y += 1;
         }
     }
 }

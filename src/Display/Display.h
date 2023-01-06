@@ -43,6 +43,10 @@
 
 #define SPRITE_TRANSPARENT_COLOR 0xFFFF
 
+#define SPRITE_INDEX_FIRST_PIXEL_MASK 0xF0
+#define SPRITE_INDEX_FIRST_PIXEL_SHIFT 4
+#define SPRITE_INDEX_SECOND_PIXEL_MASK 0x0F
+#define SPRITE_INDEX_SECOND_PIXEL_SHIFT 0
 
 class DisplayClass {
     public:
@@ -68,7 +72,12 @@ class DisplayClass {
             uint16_t color
         );
         void invert_colors();
-        void draw_sprite(const uint16_t* sprite, uint16_t x, uint16_t y);
+        void draw_sprite(
+            const uint8_t* sprite,
+            const uint16_t* colors,
+            uint16_t x,
+            uint16_t y
+        );
 
     private:
         void start_display_startup_sequence();
