@@ -254,33 +254,41 @@ void DisplayClass::draw_sprite(
     uint16_t x,
     uint16_t y
 ) {
+    // The maximum values (exclusive) of the x and y positions of the sprite
     const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
     const uint16_t y_end = y + sprite[1];  // Sprite[1] == Sprite height
 
-    const uint16_t sprite_size = (sprite[0] + 1) * (sprite[1] + 1);
-    uint16_t current_x = x;
-    uint16_t current_y = y;
-    uint16_t sprite_index = 2;
+    /*
+    This value is here to track the current index of the sprite array.
+    It will be incremented after every odd sprite pixel iteration
+    */
+    uint16_t sprite_array_index = 2;
 
-    for (uint16_t i = 0; i < sprite_size; i++) {
-        uint8_t color_index;
+    // This value will check if the current pixel index is even
+    bool pixel_index_is_even = true;
 
-        if (i % 2 == 0) {
-            color_index = (sprite[sprite_index] & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
-        } else {
-            color_index = sprite[sprite_index] & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
-            sprite_index += 1;
-        }
+    for (uint16_t current_x = x; current_x < x_end; current_x += 1) {
+        for (uint16_t current_y = y; current_y < y_end; current_y += 1) {
+            /*
+            The sprite array consists of two 4 bit color indexes per 8 bit array entry
+            For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index
+            and on every odd pixel, we get the SPRITE_INDEX_SECOND_PIXEL_MASK bits of the sprite array index
+            */
+            uint8_t color_index;
+            if (pixel_index_is_even) {
+                color_index = (sprite[sprite_array_index] & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
+            } else {
+                color_index = sprite[sprite_array_index] & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
+                sprite_array_index += 1;
+            }
 
-        if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
-            this->draw_pixel(current_x, current_y, colors[color_index]);
-        }
+            // If the SPRITE_TRANSPARENT_COLOR is found, skip drawing on this pixel
+            if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
+                this->draw_pixel(current_x, current_y, colors[color_index]);
+            }
 
-        if (current_y == y_end) {
-            current_y = y;
-            current_x += 1;
-        } else {
-            current_y += 1;
+            // We finished drawing the pixel, so continue to the next one
+            pixel_index_is_even = !pixel_index_is_even;
         }
     }
 }
