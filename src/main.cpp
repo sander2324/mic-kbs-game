@@ -7,6 +7,7 @@
 
 #include "Nunchuck/Nunchuck.h"
 #include "Display/Display.h"
+#include "sprites/test.h"
 
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
@@ -39,13 +40,16 @@ int main() {
     initialize();
 
     Display.fill_screen(0xF8F8);
-    Display.draw_rectangle(5, 5, 132, 5, 0xFFFF);
-    Display.draw_rectangle(5, 10, 132, 10, 0xFFFF);
-    Display.draw_rectangle(5, 15, 132, 15, 0xFFFF);
-    Display.draw_rectangle(5, 20, 132, 20, 0xFFFF);
-    Display.draw_rectangle(5, 25, 132, 25, 0xFFFF);
 
-    Display.draw_circle(200, 200, 15, 0xFFFF);
+    Display.draw_circle(190, 190, 15, 0xFFFF);
+    for (uint16_t x = 0; x <= 305; x += 16) {
+        for (uint16_t y = 0; y <= 225; y += 16) {
+            Display.draw_sprite(TEST_SPRITE, TEST_COLORS, x, y);
+        }
+    }
+
+    Display.fill_screen(0xF8F8);
+    Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 150, 150);
 
     uint16_t square_color;
     while (true) {

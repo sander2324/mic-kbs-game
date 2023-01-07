@@ -247,6 +247,54 @@ void DisplayClass::draw_circle(
 }
 
 
+// Draw a sprite array
+void DisplayClass::draw_sprite(
+    const uint8_t* sprite,
+    const uint16_t* colors,
+    uint16_t x,
+    uint16_t y
+) {
+    // The maximum values (exclusive) of the x and y positions of the sprite
+    const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
+    const uint16_t y_end = y + sprite[1];  // Sprite[1] == Sprite height
+
+    /*
+    This value is here to track the current index of the sprite array.
+    It will be incremented after every odd sprite pixel iteration
+    */
+    uint16_t sprite_array_index = 2;
+
+    // This value will check if the current pixel index is even
+    bool pixel_index_is_even = true;
+
+    for (uint16_t current_x = x; current_x < x_end; current_x += 1) {
+        for (uint16_t current_y = y; current_y < y_end; current_y += 1) {
+            /*
+            The sprite array consists of two 4 bit color indexes per 8 bit array entry
+            For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index.
+            And on every odd pixel, we get the SPRITE_INDEX_SECOND_PIXEL_MASK bits of the
+            sprite array index and increment sprite_array_index to go to the next array entry.
+            */
+            uint8_t color_index;
+            if (pixel_index_is_even) {
+                color_index = (sprite[sprite_array_index] & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
+            } else {
+                color_index = sprite[sprite_array_index] & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
+                sprite_array_index += 1;
+            }
+
+            // If the SPRITE_TRANSPARENT_COLOR is found, skip drawing on this pixel
+            if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
+                this->draw_pixel(current_x, current_y, colors[color_index]);
+            }
+
+            // We finished drawing the pixel, so continue to the next one
+            pixel_index_is_even = !pixel_index_is_even;
+        }
+    }
+}
+
+
 // Invert all colors that are on the display right now
 void DisplayClass::invert_colors() {
     if (this->is_inverted) {
