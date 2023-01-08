@@ -7,7 +7,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
     set(AVR_PORT /dev/ttyACM0)
 elseif(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
     set(ARDUINO_PATH "$ENV{HOMEDRIVE}$ENV{HOMEPATH}/Arduino")
-    set(AVR_PORT COM6)
+    set(AVR_PORT COM3)
 endif()
 
 # the toolchain to use
