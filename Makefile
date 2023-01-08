@@ -6,7 +6,7 @@ buildfiles:
 	cmake -B build -G "Unix Makefiles"
 
 upload:
-	cmake --build build --target upload --no-print-directory
+	cmake --build build --target upload
 
 clean:
 	rm -r build/
