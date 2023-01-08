@@ -48,6 +48,8 @@
 #define SPRITE_INDEX_SECOND_PIXEL_MASK 0x0F
 #define SPRITE_INDEX_SECOND_PIXEL_SHIFT 0
 
+#define TEXT_DEFAULT_COLOR 0xFFFE
+
 class DisplayClass {
     public:
         DisplayClass();
@@ -78,6 +80,14 @@ class DisplayClass {
             uint16_t x,
             uint16_t y,
             uint8_t scale = 1
+        );
+        void draw_text(
+            const char* text,
+            uint16_t x,
+            uint16_t y,
+            const uint8_t** font,
+            uint8_t scale = 1,
+            uint16_t color = TEXT_DEFAULT_COLOR
         );
 
     private:

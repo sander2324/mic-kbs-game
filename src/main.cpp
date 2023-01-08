@@ -7,6 +7,7 @@
 
 #include "Nunchuck/Nunchuck.h"
 #include "Display/Display.h"
+#include "sprites/font.h"
 #include "sprites/test.h"
 
 #if NUNCHUCK_DEBUG
@@ -42,16 +43,18 @@ int main() {
     Display.fill_screen(0xF8F8);
 
     Display.draw_circle(190, 190, 15, 0xFFFF);
-    for (uint16_t x = 0; x <= 305; x += 16) {
-        for (uint16_t y = 0; y <= 225; y += 16) {
-            Display.draw_sprite(TEST_SPRITE, TEST_COLORS, x, y, 3);
-        }
-    }
+    // for (uint16_t x = 0; x <= 305; x += 16) {
+    //     for (uint16_t y = 0; y <= 225; y += 16) {
+    //         Display.draw_sprite(TEST_SPRITE, TEST_COLORS, x, y, 3);
+    //     }
+    // }
 
     Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 150, 150, 1);
 
     Display.fill_screen(0xF8F8);
     Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 50, 50, 3);
+
+    Display.draw_text("ABBA: 100%", 10, 200, FONT_SPRITES, 3);
 
     uint16_t square_color;
     while (true) {
