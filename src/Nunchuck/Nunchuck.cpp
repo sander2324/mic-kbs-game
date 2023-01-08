@@ -55,7 +55,7 @@ NunchuckJoystickState NunchuckClass::get_nunchuck_joystick_state(uint8_t x, uint
 
 
 // Update Nunchuck current_state and previous_state
-void NunchuckClass::set_state() {
+void NunchuckClass::fetch_state() {
     uint8_t data_buffer[NUNCHUCK_BUFFER_LENGTH];
     this->get_nunchuck_data_buffer(data_buffer);
 

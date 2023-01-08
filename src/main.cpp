@@ -55,7 +55,7 @@ int main() {
 
     uint16_t square_color;
     while (true) {
-        Nunchuck.set_state();
+        Nunchuck.fetch_state();
 
         if (!Nunchuck.state_changed()) continue;
 
