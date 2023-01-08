@@ -42,7 +42,7 @@ class NunchuckClass {
         void set_nunchuck_zero();
         NunchuckState current_state;
         NunchuckState previous_state;
-        void set_state();
+        void fetch_state();
         bool state_changed();
 
     private:
