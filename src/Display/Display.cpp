@@ -303,6 +303,31 @@ void DisplayClass::draw_sprite(
 }
 
 
+void DisplayClass::draw_text(
+    const char* text,
+    uint16_t x,
+    uint16_t y,
+    const uint8_t** font,
+    uint8_t scale = 1,
+    uint16_t color = TEXT_DEFAULT_COLOR
+) {
+    const uint16_t sprite_colors[] = {
+        SPRITE_TRANSPARENT_COLOR,
+        color,
+    };
+    for (uint8_t i = 0; text[i] != '\0'; i++) {
+        const uint8_t* current_sprite = font[text[i] - ' '];
+        draw_sprite(
+            current_sprite,
+            sprite_colors,
+            x + (i * (current_sprite[0] * scale + scale)),
+            y,
+            scale
+        );
+    }
+}
+
+
 // Invert all colors that are on the display right now
 void DisplayClass::invert_colors() {
     if (this->is_inverted) {
