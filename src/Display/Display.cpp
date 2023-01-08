@@ -252,11 +252,12 @@ void DisplayClass::draw_sprite(
     const uint8_t* sprite,
     const uint16_t* colors,
     uint16_t x,
-    uint16_t y
+    uint16_t y,
+    uint8_t scale = 1
 ) {
     // The maximum values (exclusive) of the x and y positions of the sprite
-    const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
-    const uint16_t y_end = y + sprite[1];  // Sprite[1] == Sprite height
+    // const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
+    // const uint16_t y_end = y + sprite[1];  // Sprite[1] == Sprite height
 
     /*
     This value is here to track the current index of the sprite array.
@@ -267,8 +268,8 @@ void DisplayClass::draw_sprite(
     // This value will check if the current pixel index is even
     bool pixel_index_is_even = true;
 
-    for (uint16_t current_x = x; current_x < x_end; current_x += 1) {
-        for (uint16_t current_y = y; current_y < y_end; current_y += 1) {
+    for (uint16_t relative_x = 0; relative_x < sprite[0]; relative_x += 1) {
+        for (uint16_t relative_y = 0; relative_y < sprite[1]; relative_y += 1) {
             /*
             The sprite array consists of two 4 bit color indexes per 8 bit array entry
             For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index.
@@ -285,7 +286,14 @@ void DisplayClass::draw_sprite(
 
             // If the SPRITE_TRANSPARENT_COLOR is found, skip drawing on this pixel
             if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
-                this->draw_pixel(current_x, current_y, colors[color_index]);
+                // this->draw_pixel(current_x, current_y, colors[color_index]);
+                this->draw_rectangle(
+                    x + (relative_x * scale),
+                    y + (relative_y * scale),
+                    x + (relative_x * scale) + scale - 1,
+                    y + (relative_y * scale) + scale - 1,
+                    colors[color_index]
+                );
             }
 
             // We finished drawing the pixel, so continue to the next one

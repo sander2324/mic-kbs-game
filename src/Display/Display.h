@@ -76,7 +76,8 @@ class DisplayClass {
             const uint8_t* sprite,
             const uint16_t* colors,
             uint16_t x,
-            uint16_t y
+            uint16_t y,
+            uint8_t scale = 1
         );
 
     private:
