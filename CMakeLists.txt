@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/Nunchuck/Nunchuck.cpp
     src/Display/Display.cpp
+    src/Monster/Monster.cpp
 )
 
 # Add arduino core library

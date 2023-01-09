@@ -213,6 +213,22 @@ void DisplayClass::draw_rectangle(
 }
 
 
+void DisplayClass::draw_border(
+    uint16_t x_start,
+    uint16_t y_start,
+    uint16_t x_end,
+    uint16_t y_end,
+    uint16_t thickness,
+    bool corner_rounding,
+    uint16_t color
+) {
+    this->draw_rectangle(x_start + (thickness * corner_rounding), y_start, x_end - (thickness * corner_rounding), y_start + thickness - 1, color);
+    this->draw_rectangle(x_start, y_start + (thickness * corner_rounding), x_start + thickness - 1, y_end - (thickness * corner_rounding), color);
+    this->draw_rectangle(x_start + (thickness * corner_rounding), y_end - thickness + 1, x_end - (thickness * corner_rounding), y_end, color);
+    this->draw_rectangle(x_end - thickness + 1, y_start + (thickness * corner_rounding), x_end, y_end - (thickness * corner_rounding), color);
+}
+
+
 // Draw a circle with a given radius and color. The given coordinates are the center of the circle
 void DisplayClass::draw_circle(
     uint16_t x,
@@ -338,6 +354,30 @@ void DisplayClass::draw_text(
             cursor_x = cursor_x + (current_sprite[0] * scale) + scale;
         }
     }
+}
+
+void DisplayClass::draw_centered_text(
+    const char* text,
+    uint16_t y,
+    const uint8_t** font,
+    uint8_t scale = 1,
+    uint16_t color = TEXT_DEFAULT_COLOR
+) {
+    uint16_t total_width = 0;
+    uint16_t line_width = 0;
+    for (uint8_t i = 0; text[i] != '\0'; i++) {
+        if (text[i] == '\n') {
+            line_width = 0;
+        } else if (text[i] >= 'a' && text[i] <= 'z') {
+            line_width = line_width + (font[(text[i]-32) - ' '][0] * scale) + scale;
+        } else {
+            line_width = line_width + (font[text[i] - ' '][0] * scale) + scale;
+        }
+        if (line_width > total_width) {
+            total_width = line_width;
+        }
+    }
+    this->draw_text(text, floor(DISPLAY_ROW_PIXEL_AMOUNT/2) - floor((line_width-scale)/2), y, font, scale, color);
 }
 
 
