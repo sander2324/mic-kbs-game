@@ -49,14 +49,23 @@ int main() {
     //     }
     // }
 
-    Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 150, 150, 1);
 
-    Display.fill_screen(0xF8F8);
-    Display.draw_sprite(TEST_SPRITE, TEST_COLORS, 50, 50, 3);
+    Display.fill_screen(0x0000);
 
-    Display.draw_text("ABBA: 100%", 10, 200, FONT_SPRITES, 3);
+    //Display.draw_text("?.!%/():0123456789", 10, 200, FONT_SPRITES, 3);
+    _delay_ms(1000);
+    Display.draw_text("CraftOS 1.8\n> ", 10, 210, FONT_SPRITES, 2 ,0xDEED);
+    _delay_ms(1000);
+    Display.draw_text("\n  Hello there!", 10, 210, FONT_SPRITES, 2);
+    _delay_ms(1000);
+    while (true) {
+        _delay_ms(500);
+        Display.draw_text("\n              _", 10, 210, FONT_SPRITES, 2, 0x0000);
+        _delay_ms(500);
+        Display.draw_text("\n              _", 10, 210, FONT_SPRITES, 2);
+    }
 
-    uint16_t square_color;
+    /*uint16_t square_color;
     while (true) {
         Nunchuck.fetch_state();
 
@@ -79,8 +88,8 @@ int main() {
             square_color = 0xDDDE;
         }
 
-        Display.draw_rectangle(100, 100, 132, 132, square_color);
-    }
+        //Display.draw_rectangle(100, 100, 132, 132, square_color);
+    }*/
 
 #if NUNCHUCK_DEBUG
     while(true) {

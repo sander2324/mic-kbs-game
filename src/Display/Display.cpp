@@ -315,15 +315,28 @@ void DisplayClass::draw_text(
         SPRITE_TRANSPARENT_COLOR,
         color,
     };
+    uint16_t cursor_x = x;
+    uint16_t cursor_y = y;
     for (uint8_t i = 0; text[i] != '\0'; i++) {
-        const uint8_t* current_sprite = font[text[i] - ' '];
-        draw_sprite(
-            current_sprite,
-            sprite_colors,
-            x + (i * (current_sprite[0] * scale + scale)),
-            y,
-            scale
-        );
+        if (text[i] == '\n') {
+            cursor_x = x;
+            cursor_y = cursor_y - font[1][1] * scale - 2 * scale;
+        } else {
+            const uint8_t* current_sprite;
+            if (text[i] >= 'a' && text[i] <= 'z') {
+                current_sprite = font[(text[i]-32) - ' '];
+            } else {
+                current_sprite = font[text[i] - ' '];
+            }
+            draw_sprite(
+                current_sprite,
+                sprite_colors,
+                cursor_x,
+                cursor_y - ((current_sprite[1] - font[1][1]) * scale),
+                scale
+            );
+            cursor_x = cursor_x + (current_sprite[0] * scale) + scale;
+        }
     }
 }
 
