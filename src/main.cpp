@@ -21,7 +21,8 @@
 #include "Monster/Monster.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
-#include "sprites/slime.h"
+
+#include "monster_moves.h"
 
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
@@ -88,14 +89,11 @@ int main() {
                 Display.draw_border(6, 6, DISPLAY_ROW_PIXEL_AMOUNT-7, 84, 6, 0, COLOR_DARK_GRAY);
                 Display.draw_border(9, 9, DISPLAY_ROW_PIXEL_AMOUNT-10, 81, 3, 1, COLOR_WHITE);
 
-                // Move slime_moveset
-                Monster slime = Monster(
-                    "SLIME",
-                    {DISSOLVE, POUND, SHIELD, QUICK_ATTACK_MOVE},
-                    SLIME_SPRITE,
-                    SLIME_COLORS,
-                    10
-                );
+                Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
+
+                Monster slime = Monster(MonsterKind::SLIME_MONSTER);
+
+                Display.draw_sprite(slime.get_sprite(), slime.get_sprite_colors(), 25, 100, 5);
 
                 Display.draw_text("POUND", 20, 60, FONT_SPRITES, 2, COLOR_BLACK);
                 Display.draw_text("POW:20 ACC:60%", 20, 50, FONT_SPRITES, 1, COLOR_DARK_GRAY);

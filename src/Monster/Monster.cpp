@@ -1,16 +1,28 @@
 #include "Monster.h"
 
 
-Monster::Monster(
-    const char* name,
-    Move* moveset,
-    uint8_t* sprite,
-    uint16_t* sprite_colors,
-    uint8_t max_health
-) {
-    this->name = name;
-    this->moveset = moveset;
-    this->sprite = sprite;
-    this->max_health = max_health;
-    this->current_health = max_health;
+Monster::Monster(MonsterKind monster_kind) {
+    switch (monster_kind) {
+        case MonsterKind::SLIME_MONSTER: {
+            break; // Stats
+        }
+    }
+}
+
+
+const uint8_t* Monster::get_sprite() {
+    switch (this->kind) {
+        case MonsterKind::SLIME_MONSTER: {
+            return SLIME_SPRITE;
+        }
+    }
+}
+
+
+const uint16_t* Monster::get_sprite_colors() {
+    switch (this->kind) {
+        case MonsterKind::SLIME_MONSTER: {
+            return SLIME_COLORS;
+        }
+    }
 }

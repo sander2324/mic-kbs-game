@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <avr/pgmspace.h>
+
 const uint16_t SLIME_COLORS[] = {
     0xFFFF,
     0x19CE,
@@ -141,3 +144,5 @@ const uint8_t SLIME_SPRITE[] = {
     0x00,
     0x00,
 };
+
+
