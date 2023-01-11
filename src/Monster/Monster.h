@@ -24,9 +24,6 @@ class Monster {
         const uint16_t* sprite_colors;
         uint8_t max_health;
         int8_t current_health;
-        const uint8_t* get_sprite();
-        const uint16_t* get_sprite_colors();
-
 };
 
 #endif

@@ -2,6 +2,7 @@
 #ifndef DDRB
 #include <avr/io.h>
 #endif
+#include <avr/pgmspace.h>
 
 #include <util/delay.h>
 
@@ -285,8 +286,11 @@ void DisplayClass::draw_sprite(
     // This value will check if the current pixel index is even
     bool pixel_index_is_even = true;
 
-    for (uint16_t relative_x = 0; relative_x < sprite[0]; relative_x += 1) {
-        for (uint16_t relative_y = 0; relative_y < sprite[1]; relative_y += 1) {
+    const uint8_t sprite_width = pgm_read_byte(sprite);
+    const uint8_t sprite_height = pgm_read_byte(sprite + 1);
+
+    for (uint16_t relative_x = 0; relative_x < sprite_width; relative_x += 1) {
+        for (uint16_t relative_y = 0; relative_y < sprite_height; relative_y += 1) {
             /*
             The sprite array consists of two 4 bit color indexes per 8 bit array entry
             For on every even pixel, we get the SPRITE_INDEX_FIRST_PIXEL_MASK bits of the sprite array index.
@@ -294,23 +298,25 @@ void DisplayClass::draw_sprite(
             sprite array index and increment sprite_array_index to go to the next array entry.
             */
             uint8_t color_index;
+            uint8_t current_sprite_chunk = pgm_read_byte(sprite + sprite_array_index);
             if (pixel_index_is_even) {
-                color_index = (sprite[sprite_array_index] & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
+                color_index = (current_sprite_chunk & SPRITE_INDEX_FIRST_PIXEL_MASK) >> SPRITE_INDEX_FIRST_PIXEL_SHIFT;
             } else {
-                color_index = sprite[sprite_array_index] & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
+                color_index = current_sprite_chunk & SPRITE_INDEX_SECOND_PIXEL_MASK >> SPRITE_INDEX_SECOND_PIXEL_SHIFT;
                 sprite_array_index += 1;
             }
 
+            uint16_t selected_color = pgm_read_word(colors + color_index);
             // If the SPRITE_TRANSPARENT_COLOR is found, skip drawing on this pixel
-            if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
+            if (selected_color != SPRITE_TRANSPARENT_COLOR) {
                 // this->draw_pixel(current_x, current_y, colors[color_index]);
                 if (mirrored) {
                     this->draw_rectangle(
-                        (sprite[0] + x - 1) - (relative_x * scale),
+                        (sprite_width + x - 1) - (relative_x * scale),
                         y + (relative_y * scale),
-                        (sprite[0] + x - 1) - (relative_x * scale) + scale - 1,
+                        (sprite_width + x - 1) - (relative_x * scale) + scale - 1,
                         y + (relative_y * scale) + scale - 1,
-                        colors[color_index]
+                        selected_color
                     );
                 } else {
                     this->draw_rectangle(
@@ -318,7 +324,7 @@ void DisplayClass::draw_sprite(
                         y + (relative_y * scale),
                         x + (relative_x * scale) + scale - 1,
                         y + (relative_y * scale) + scale - 1,
-                        colors[color_index]
+                        selected_color
                     );
                 }
             }
@@ -335,19 +341,17 @@ void DisplayClass::draw_text(
     uint16_t x,
     uint16_t y,
     const uint8_t** font,
-    uint8_t scale = 1,
-    uint16_t color = TEXT_DEFAULT_COLOR
+    const uint16_t* colors,
+    uint8_t scale = 1
 ) {
-    const uint16_t sprite_colors[] = {
-        SPRITE_TRANSPARENT_COLOR,
-        color,
-    };
     uint16_t cursor_x = x;
     uint16_t cursor_y = y;
     for (uint8_t i = 0; text[i] != '\0'; i++) {
+        uint8_t font_height = pgm_read_byte(font[1] + 1);
+
         if (text[i] == '\n') {
             cursor_x = x;
-            cursor_y = cursor_y - font[1][1] * scale - 2 * scale;
+            cursor_y = cursor_y - font_height * scale - 2 * scale;
         } else {
             const uint8_t* current_sprite;
             if (text[i] >= 'a' && text[i] <= 'z') {
@@ -355,14 +359,17 @@ void DisplayClass::draw_text(
             } else {
                 current_sprite = font[text[i] - ' '];
             }
-            draw_sprite(
+
+            uint8_t current_sprite_width = pgm_read_byte(current_sprite + 0);
+            uint8_t current_sprite_height = pgm_read_byte(current_sprite + 1);
+            this->draw_sprite(
                 current_sprite,
-                sprite_colors,
+                colors,
                 cursor_x,
-                cursor_y - ((current_sprite[1] - font[1][1]) * scale),
+                cursor_y - ((current_sprite_height - font_height) * scale),
                 scale
             );
-            cursor_x = cursor_x + (current_sprite[0] * scale) + scale;
+            cursor_x = cursor_x + (current_sprite_width * scale) + scale;
         }
     }
 }
@@ -371,8 +378,8 @@ void DisplayClass::draw_centered_text(
     const char* text,
     uint16_t y,
     const uint8_t** font,
-    uint8_t scale = 1,
-    uint16_t color = TEXT_DEFAULT_COLOR
+    const uint16_t* colors,
+    uint8_t scale = 1
 ) {
     uint16_t total_width = 0;
     uint16_t line_width = 0;
@@ -380,15 +387,15 @@ void DisplayClass::draw_centered_text(
         if (text[i] == '\n') {
             line_width = 0;
         } else if (text[i] >= 'a' && text[i] <= 'z') {
-            line_width = line_width + (font[(text[i]-32) - ' '][0] * scale) + scale;
+            line_width = line_width + (pgm_read_byte(font[(text[i]-32) - ' '] + 0) * scale) + scale;
         } else {
-            line_width = line_width + (font[text[i] - ' '][0] * scale) + scale;
+            line_width = line_width + (pgm_read_byte(font[text[i] - ' '] + 0) * scale) + scale;
         }
         if (line_width > total_width) {
             total_width = line_width;
         }
     }
-    this->draw_text(text, floor(DISPLAY_ROW_PIXEL_AMOUNT/2) - floor((line_width-scale)/2), y, font, scale, color);
+    this->draw_text(text, floor(DISPLAY_ROW_PIXEL_AMOUNT / 2) - floor((line_width-scale) / 2), y, font, colors, scale);
 }
 
 

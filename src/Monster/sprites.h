@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <avr/pgmspace.h>
 
-const uint16_t SLIME_COLORS[] = {
+const uint16_t SLIME_COLORS[] PROGMEM = {
     0xFFFF,
     0x19CE,
     0x4458,
@@ -12,7 +12,7 @@ const uint16_t SLIME_COLORS[] = {
     0x0000,
 };
 
-const uint16_t RED_SLIME_COLORS[] = {
+const uint16_t RED_SLIME_COLORS[] PROGMEM = {
     0xFFFF,
     0x6904,
     0xA1C5,
@@ -23,7 +23,7 @@ const uint16_t RED_SLIME_COLORS[] = {
     0x0000,
 };
 
-const uint16_t CLEAR_SLIME_COLORS[] = {
+const uint16_t CLEAR_SLIME_COLORS[] PROGMEM = {
     0x07E0,
     0x07E0,
     0x07E0,
@@ -34,7 +34,7 @@ const uint16_t CLEAR_SLIME_COLORS[] = {
     0x07E0
 };
 
-const uint8_t SLIME_SPRITE[] = {
+const uint8_t SLIME_SPRITE[] PROGMEM = {
     16,
     16,
     0x00,
@@ -168,7 +168,7 @@ const uint8_t SLIME_SPRITE[] = {
 };
 
 
-const uint16_t KITTY_COLORS[] = {
+const uint16_t KITTY_COLORS[] PROGMEM = {
     0xFFFF,
     0x0000,
     0x9CD3,
@@ -176,7 +176,7 @@ const uint16_t KITTY_COLORS[] = {
     0x8410,
 };
 
-const uint8_t KITTY_SPRITE[] = {
+const uint8_t KITTY_SPRITE[] PROGMEM = {
     16,
     16,
     0x00,

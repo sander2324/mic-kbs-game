@@ -52,43 +52,43 @@ void initialize() {
 }
 
 void draw_move(Move move, uint16_t x, uint16_t y) {
-    Display.draw_text(move.name, x, y, FONT_SPRITES, 2, COLOR_BLACK);
+    Display.draw_text(move.name, x, y, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
     char buffer [sizeof(int)*8+1];
     if (move.power > 0) {
         itoa(move.power, buffer, 10);
-        Display.draw_text("POW:", x, y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
+        Display.draw_text("POW:", x, y - 10, FONT_SPRITES, FONT_FG_DARK_GRAY_BG_TRANS, 1);
     } else {
         //Display.draw_text("DEF:" + itoa(move.defense) + " ACC:" + to_string(move.accuracy), 20, y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
         itoa(move.defense, buffer, 10);
-        Display.draw_text("DEF:", x, y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
+        Display.draw_text("DEF:", x, y - 10, FONT_SPRITES, FONT_FG_DARK_GRAY_BG_TRANS, 1);
     }
-    Display.draw_text(buffer, x + (CHAR_WIDTH * 4), y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
-    Display.draw_text("ACC:", x + (CHAR_WIDTH * 7), y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
+    Display.draw_text(buffer, x + (CHAR_WIDTH * 4), y - 10, FONT_SPRITES, FONT_FG_DARK_GRAY_BG_TRANS, 1);
+    Display.draw_text("ACC:", x + (CHAR_WIDTH * 7), y - 10, FONT_SPRITES, FONT_FG_DARK_GRAY_BG_TRANS, 1);
     itoa(move.accuracy, buffer, 10);
-    Display.draw_text(buffer, x + (CHAR_WIDTH * 11), y-10, FONT_SPRITES, 1, COLOR_DARK_GRAY);
+    Display.draw_text(buffer, x + (CHAR_WIDTH * 11), y - 10, FONT_SPRITES, FONT_FG_DARK_GRAY_BG_TRANS, 1);
 }
 
 void draw_health_bar(Monster monster, uint16_t x, uint16_t y, uint16_t width) {
     uint16_t color = COLOR_GREEN;
-    if (monster.current_health < monster.max_health/5) {
+    if (monster.current_health < monster.max_health / 5) {
         color = COLOR_RED;
-    } else if (monster.current_health < monster.max_health/2) {
+    } else if (monster.current_health < monster.max_health / 2) {
         color = COLOR_YELLOW;
     }
-    Display.draw_rectangle(x, y-6, x+width-1, y, COLOR_GRAY);
-    Display.draw_rectangle(x, y-6, x+floor(width*((float)monster.current_health/(float)monster.max_health))-1, y, color);
+    Display.draw_rectangle(x, y - 6, x+ width - 1, y, COLOR_GRAY);
+    Display.draw_rectangle(x, y - 6, x+ floor(width * ((float)monster.current_health / (float)monster.max_health)) - 1, y, color);
 }
 
 void draw_monster_info(Monster monster, uint16_t x, uint16_t y) {
-    Display.draw_rectangle(x+4, y-46, x+146, y-4, COLOR_WHITE);
-    Display.draw_rectangle(x+4, y-29, x+146, y-28, COLOR_RED);
-    Display.draw_rectangle(x+4, y-46, x+146, y-32, COLOR_RED);
-    Display.draw_border(x,y-50, x+150, y, 4, 1, COLOR_BLACK);
-    Display.draw_text(monster.name, x+8, y-20, FONT_SPRITES, 2, COLOR_BLACK);
-    Display.draw_rectangle(x+30, y-35, x+127, y-27, COLOR_DARK_GRAY);
-    Display.draw_text("HP", x+32, y-34, FONT_SPRITES, 1, 0xFFFE);
-    Display.draw_border(x+29, y-38, x+130, y-24, 3, 1, COLOR_DARK_GRAY);
-    draw_health_bar(monster, x+46, y-28, 80);
+    Display.draw_rectangle(x + 4, y - 46, x + 146, y - 4, COLOR_WHITE);
+    Display.draw_rectangle(x + 4, y - 29, x + 146, y - 28, COLOR_RED);
+    Display.draw_rectangle(x + 4, y - 46, x + 146, y - 32, COLOR_RED);
+    Display.draw_border(x, y - 50, x + 150, y, 4, 1, COLOR_BLACK);
+    Display.draw_text(monster.name, x+8, y-20, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
+    Display.draw_rectangle(x + 30, y - 35, x + 127, y - 27, COLOR_DARK_GRAY);
+    Display.draw_text("HP", x + 32, y - 34, FONT_SPRITES, FONT_FG_WHITE_BG_TRANS, 1);
+    Display.draw_border(x + 29, y - 38, x + 130, y - 24, 3, 1, COLOR_DARK_GRAY);
+    draw_health_bar(monster, x + 46, y - 28, 80);
 }
 
 void wait_for_z() {
@@ -115,16 +115,16 @@ void concat(char* string_one, char* string_two) {
 }
 
 int main() {
-    Move QUICK_ATTACK_MOVE = Move("QUICK ATK",15,90,0);
-    Move POUND_MOVE = Move("POUND",40,40,0);
-    Move SHIELD_MOVE = Move("SHIELD",0,70,100);
-    Move JUMP_MOVE = Move("JUMP ATK",20,85,0);
-    Move DISSOLVE_MOVE = Move("DISSOLVE",30,80,0);
-    Move FIRE_BREATH_MOVE = Move("FIRE BREATH",30,80,0);
-    Move SCRATCH_MOVE = Move("SCRATCH",20,90,0);
-    Move FELINE_FRENZY_MOVE = Move("FELINE FRENZY",60,40,0);
+    Move QUICK_ATTACK_MOVE = Move("QUICK ATK", 15, 90, 0);
+    Move POUND_MOVE = Move("POUND", 40, 40, 0);
+    Move SHIELD_MOVE = Move("SHIELD", 0, 70, 100);
+    Move JUMP_MOVE = Move("JUMP ATK", 20, 85, 0);
+    Move DISSOLVE_MOVE = Move("DISSOLVE", 30, 80, 0);
+    Move FIRE_BREATH_MOVE = Move("FIRE BREATH", 30, 80, 0);
+    Move SCRATCH_MOVE = Move("SCRATCH", 20, 90, 0);
+    Move FELINE_FRENZY_MOVE = Move("FELINE FRENZY", 60, 40, 0);
     Move WHISKER_WHIP_MOVE = Move("WHISKER WHIP", 15, 80, 0);
-    Move POUNCE_MOVE = Move("POUNCE",30,80,0);
+    Move POUNCE_MOVE = Move("POUNCE", 30, 80, 0);
 
     uint8_t move_selected = 0;
 
@@ -151,8 +151,8 @@ int main() {
     Move fire_slime_moveset[] = {POUND_MOVE, JUMP_MOVE, FIRE_BREATH_MOVE, DISSOLVE_MOVE};
     Move kitty_moveset[] = {POUNCE_MOVE, FELINE_FRENZY_MOVE, WHISKER_WHIP_MOVE, SCRATCH_MOVE};
     Monster player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
-    Monster player_two = Monster(MonsterKind::FIRE_SLIME_MONSTER, fire_slime_moveset);
-    uint16_t right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT/2)-20;
+    Monster player_two = Monster(MonsterKind::KITTY_MONSTER, kitty_moveset);
+    uint16_t right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT / 2) - 20;
     uint16_t bottom_moves_y_offset = 30;
     while (true) {
         switch(stage) {
@@ -163,8 +163,8 @@ int main() {
                     _delay_ms(75);
                 }
                 Display.fill_screen(COLOR_BLACK);
-                Display.draw_centered_text("YOU LOSE",130, FONT_SPRITES, 3, COLOR_RED);
-                Display.draw_centered_text("PRESS Z TO RESTART", 100, FONT_SPRITES, 2, COLOR_LIGHT_GRAY);
+                Display.draw_centered_text("YOU LOSE",130, FONT_SPRITES, FONT_FG_RED_BG_TRANS, 3);
+                Display.draw_centered_text("PRESS Z TO RESTART", 100, FONT_SPRITES, FONT_FG_LIGHT_GRAY_BG_TRANS, 2);
                 while (true) {
                     Nunchuck.fetch_state();
                     if (!Nunchuck.state_changed()) continue;
@@ -181,8 +181,8 @@ int main() {
                     _delay_ms(75);
                 }
                 Display.fill_screen(COLOR_BLACK);
-                Display.draw_centered_text("YOU WIN",130, FONT_SPRITES, 3, COLOR_GREEN);
-                Display.draw_centered_text("PRESS Z TO RESTART", 100, FONT_SPRITES, 2, COLOR_LIGHT_GRAY);
+                Display.draw_centered_text("YOU WIN",130, FONT_SPRITES, FONT_FG_GREEN_BG_TRANS, 3);
+                Display.draw_centered_text("PRESS Z TO RESTART", 100, FONT_SPRITES, FONT_FG_LIGHT_GRAY_BG_TRANS, 2);
                 while (true) {
                     Nunchuck.fetch_state();
                     if (!Nunchuck.state_changed()) continue;
@@ -194,8 +194,8 @@ int main() {
                 break;
             case MAIN_MENU:
                 // main menu
-                Display.draw_centered_text("TASMON(tm)", 130, FONT_SPRITES, 3, COLOR_RED);
-                Display.draw_centered_text("PRESS Z TO START", 100, FONT_SPRITES, 2, COLOR_LIGHT_GRAY);
+                Display.draw_centered_text("TASMON(tm)", 130, FONT_SPRITES, FONT_FG_RED_BG_TRANS, 3);
+                Display.draw_centered_text("PRESS Z TO START", 100, FONT_SPRITES, FONT_FG_LIGHT_GRAY_BG_TRANS, 2);
                 _delay_ms(500);
                 wait_for_z();
                 stage = START_BATTLE;
@@ -204,8 +204,8 @@ int main() {
                 Display.fill_screen(COLOR_GREEN);
                 //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
                 player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
-                player_two = Monster(MonsterKind::FIRE_SLIME_MONSTER, fire_slime_moveset);
-                right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT/2)-20;
+                player_two = Monster(MonsterKind::KITTY_MONSTER, kitty_moveset);
+                right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT / 2)-20;
                 bottom_moves_y_offset = 30;
 
                 Display.draw_sprite(player_one.sprite, player_one.sprite_colors, 25, 100, 5);
@@ -309,7 +309,7 @@ int main() {
                 }
             case WAIT_FOR_OPPONENT:
                 Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
-                Display.draw_text("WAITING FOR OPPONENT...", 20, 40, FONT_SPRITES, 2, COLOR_BLACK);
+                Display.draw_text("WAITING FOR OPPONENT...", 20, 40, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
                 _delay_ms(500);
                 uint16_t wait_time = 0;
 
@@ -319,8 +319,8 @@ int main() {
             case FIRST_MOVE:
 
                 Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
-                Display.draw_centered_text("YOU USED", 50, FONT_SPRITES, 2, COLOR_BLACK);
-                Display.draw_centered_text(player_one.moveset[move_selected].name, 30, FONT_SPRITES, 2, COLOR_BLACK);
+                Display.draw_centered_text("YOU USED", 50, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
+                Display.draw_centered_text(player_one.moveset[move_selected].name, 30, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
 
                 if ((int)rand()%101 <= player_one.moveset[move_selected].accuracy) {
                     if (player_one.moveset[move_selected].power > 0) {
@@ -372,7 +372,7 @@ int main() {
             case FIRST_MISS:
                 if (stage == FIRST_MISS) {
                     Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
-                    Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, 2, COLOR_BLACK);
+                    Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
                     _delay_ms(500);
                     wait_for_z();
                     stage = SECOND_MOVE;
@@ -381,8 +381,8 @@ int main() {
             case SECOND_MOVE:
                 uint8_t enemy_move = rand()%4;
                 Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
-                Display.draw_centered_text("ENEMY USED", 50, FONT_SPRITES, 2, COLOR_BLACK);
-                Display.draw_centered_text(player_two.moveset[enemy_move].name, 30, FONT_SPRITES, 2, COLOR_BLACK);
+                Display.draw_centered_text("ENEMY USED", 50, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
+                Display.draw_centered_text(player_two.moveset[enemy_move].name, 30, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
                 // Display.draw_centered_text("RIP", 50, FONT_SPRITES, 2, COLOR_BLACK);
 
                 if ((int)rand()%101 <= player_two.moveset[enemy_move].accuracy) {
@@ -406,70 +406,17 @@ int main() {
                 } else {
                     wait_for_z();
                     stage = SECOND_MISS;
-                    _delay_ms(500);
                 }
 
             case SECOND_MISS:
-                Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
-                Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, 2, COLOR_BLACK);
+                Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT - 13, 78, COLOR_WHITE);
+                Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
                 _delay_ms(500);
                 wait_for_z();
                 stage = SELECT_MOVE;
                 break;
-
         }
     }
-
-    // for (uint16_t x = 0; x <= 305; x += 16) {
-    //     for (uint16_t y = 0; y <= 225; y += 16) {
-    //         Display.draw_sprite(TEST_SPRITE, TEST_COLORS, x, y, 3);
-    //     }
-    // }
-
-
-    // Display.fill_screen(0x0000);
-    // Display.draw_border(2, 2, DISPLAY_ROW_PIXEL_AMOUNT-2, DISPLAY_COLUMN_PIXEL_AMOUNT-2, 3, 1, 0x07E0);
-
-    // Display.draw_sprite(SLIME_SPRITE, SLIME_COLORS, 50, 100, 5);
-    // _delay_ms(1000);
-    // Display.draw_text("CraftOS 1.8\n> ", 10, 210, FONT_SPRITES, 2 ,0xDEED);
-    // _delay_ms(1000);
-    // Display.draw_text("\n  Hello there!", 10, 210, FONT_SPRITES, 2);
-    // _delay_ms(1000);
-    // while (true) {
-    //     _delay_ms(500);
-    //     Display.draw_text("\n              _", 10, 210, FONT_SPRITES, 2, 0x0000);
-    //     _delay_ms(500);
-    //     Display.draw_text("\n              _", 10, 210, FONT_SPRITES, 2);
-    // }
-
-
-
-    /*uint16_t square_color;
-    while (true) {
-        Nunchuck.fetch_state();
-
-        if (!Nunchuck.state_changed()) continue;
-
-        square_color = 0xFFFF;
-        if (Nunchuck.current_state.z_pressed && !Nunchuck.current_state.c_pressed) {
-            square_color = 0xEEEE;
-        }
-        else if (Nunchuck.current_state.c_pressed && !Nunchuck.current_state.z_pressed) {
-            for (uint8_t i = 0; i < 8; i++) {
-                Display.invert_colors();
-                _delay_ms(75);
-            }
-        }
-        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::UP) {
-            square_color = 0x3E92;
-        }
-        else if (Nunchuck.current_state.joystick_state == NunchuckJoystickState::DOWN) {
-            square_color = 0xDDDE;
-        }
-
-        //Display.draw_rectangle(100, 100, 132, 132, square_color);
-    }*/
 
 #if NUNCHUCK_DEBUG
     while(true) {

@@ -97,15 +97,15 @@ class DisplayClass {
             uint16_t x,
             uint16_t y,
             const uint8_t** font,
-            uint8_t scale = 1,
-            uint16_t color = TEXT_DEFAULT_COLOR
+            const uint16_t* colors,
+            uint8_t scale = 1
         );
         void draw_centered_text(
             const char* text,
             uint16_t y,
             const uint8_t** font,
-            uint8_t scale = 1,
-            uint16_t color = TEXT_DEFAULT_COLOR
+            const uint16_t* colors,
+            uint8_t scale = 1
         );
 
     private:

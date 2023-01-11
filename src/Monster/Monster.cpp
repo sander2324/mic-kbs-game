@@ -8,8 +8,8 @@ Monster::Monster(MonsterKind monster_kind, Move* moveset) {
             this->sprite = SLIME_SPRITE;
             this->sprite_colors = SLIME_COLORS;
             this->max_health = 100;
-            this->current_health = 100;
-            break; // Stats
+            this->current_health = this->max_health;
+            break;
         }
         case MonsterKind::FIRE_SLIME_MONSTER: {
             this->name = "FIRE SLIME";
@@ -17,8 +17,8 @@ Monster::Monster(MonsterKind monster_kind, Move* moveset) {
             this->sprite = SLIME_SPRITE;
             this->sprite_colors = RED_SLIME_COLORS;
             this->max_health = 100;
-            this->current_health = 100;
-            break; // Stats
+            this->current_health = this->max_health;
+            break;
         }
         case MonsterKind::KITTY_MONSTER: {
             this->name = "KITTY";
@@ -26,26 +26,8 @@ Monster::Monster(MonsterKind monster_kind, Move* moveset) {
             this->sprite = KITTY_SPRITE;
             this->sprite_colors = KITTY_COLORS;
             this->max_health = 100;
-            this->current_health = 100;
-            break; // Stats
-        }
-    }
-}
-
-
-const uint8_t* Monster::get_sprite() {
-    switch (this->kind) {
-        case MonsterKind::SLIME_MONSTER: {
-            return SLIME_SPRITE;
-        }
-    }
-}
-
-
-const uint16_t* Monster::get_sprite_colors() {
-    switch (this->kind) {
-        case MonsterKind::SLIME_MONSTER: {
-            return SLIME_COLORS;
+            this->current_health = this->max_health;
+            break;
         }
     }
 }

@@ -1,9 +1,36 @@
-const uint16_t FONT_COLORS[] = {
-    0xFFFF,
-    0xF800,
+#define FONT_TRANSPARENT_COLOR 0xFFFF
+
+const uint16_t FONT_FG_BLACK_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_BLACK,
 };
 
-const uint8_t SPACE_SPRITE[] = {
+const uint16_t FONT_FG_LIGHT_GRAY_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_LIGHT_GRAY,
+};
+
+const uint16_t FONT_FG_DARK_GRAY_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_DARK_GRAY,
+};
+
+const uint16_t FONT_FG_RED_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_RED,
+};
+
+const uint16_t FONT_FG_WHITE_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_WHITE,
+};
+
+const uint16_t FONT_FG_GREEN_BG_TRANS[] PROGMEM = {
+    FONT_TRANSPARENT_COLOR,
+    COLOR_GREEN,
+};
+
+const uint8_t SPACE_SPRITE[] PROGMEM = {
     5,
     1,
     0x00,
@@ -11,7 +38,7 @@ const uint8_t SPACE_SPRITE[] = {
     0x00,
 };
 
-const uint8_t EXCLAMATION_MARK_SPRITE[] = {
+const uint8_t EXCLAMATION_MARK_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -34,7 +61,7 @@ const uint8_t EXCLAMATION_MARK_SPRITE[] = {
     0x00,
 };
 
-const uint8_t PERCENT_SIGN_SPRITE[] = {
+const uint8_t PERCENT_SIGN_SPRITE[] PROGMEM = {
     5,
     7,
     0x10,
@@ -57,7 +84,7 @@ const uint8_t PERCENT_SIGN_SPRITE[] = {
     0x10,
 };
 
-const uint8_t BIGGER_THAN_SPRITE[] = {
+const uint8_t BIGGER_THAN_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -80,7 +107,7 @@ const uint8_t BIGGER_THAN_SPRITE[] = {
     0x00,
 };
 
-const uint8_t QUESTION_MARK_SPRITE[] = {
+const uint8_t QUESTION_MARK_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -103,7 +130,7 @@ const uint8_t QUESTION_MARK_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LEFT_BRACKET_SPRITE[] = {
+const uint8_t LEFT_BRACKET_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -126,7 +153,7 @@ const uint8_t LEFT_BRACKET_SPRITE[] = {
     0x10,
 };
 
-const uint8_t RIGHT_BRACKET_SPRITE[] = {
+const uint8_t RIGHT_BRACKET_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -149,7 +176,7 @@ const uint8_t RIGHT_BRACKET_SPRITE[] = {
     0x00,
 };
 
-const uint8_t PERIOD_SPRITE[] = {
+const uint8_t PERIOD_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -172,7 +199,7 @@ const uint8_t PERIOD_SPRITE[] = {
     0x00,
 };
 
-const uint8_t FORWARD_SLASH_SPRITE[] = {
+const uint8_t FORWARD_SLASH_SPRITE[] PROGMEM = {
     5,
     7,
     0x10,
@@ -195,7 +222,7 @@ const uint8_t FORWARD_SLASH_SPRITE[] = {
     0x10,
 };
 
-const uint8_t NUMBER_ZERO_SPRITE[] = {
+const uint8_t NUMBER_ZERO_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -218,7 +245,7 @@ const uint8_t NUMBER_ZERO_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_ONE_SPRITE[] = {
+const uint8_t NUMBER_ONE_SPRITE[] PROGMEM = {
     5,
     7,
     0x10,
@@ -241,7 +268,7 @@ const uint8_t NUMBER_ONE_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_TWO_SPRITE[] = {
+const uint8_t NUMBER_TWO_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -264,7 +291,7 @@ const uint8_t NUMBER_TWO_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_THREE_SPRITE[] = {
+const uint8_t NUMBER_THREE_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -287,7 +314,7 @@ const uint8_t NUMBER_THREE_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_FOUR_SPRITE[] = {
+const uint8_t NUMBER_FOUR_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -310,7 +337,7 @@ const uint8_t NUMBER_FOUR_SPRITE[] = {
     0x10,
 };
 
-const uint8_t NUMBER_FIVE_SPRITE[] = {
+const uint8_t NUMBER_FIVE_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -333,7 +360,7 @@ const uint8_t NUMBER_FIVE_SPRITE[] = {
     0x10,
 };
 
-const uint8_t NUMBER_SIX_SPRITE[] = {
+const uint8_t NUMBER_SIX_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -356,7 +383,7 @@ const uint8_t NUMBER_SIX_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_SEVEN_SPRITE[] = {
+const uint8_t NUMBER_SEVEN_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -379,7 +406,7 @@ const uint8_t NUMBER_SEVEN_SPRITE[] = {
     0x10,
 };
 
-const uint8_t NUMBER_EIGHT_SPRITE[] = {
+const uint8_t NUMBER_EIGHT_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -402,7 +429,7 @@ const uint8_t NUMBER_EIGHT_SPRITE[] = {
     0x00,
 };
 
-const uint8_t NUMBER_NINE_SPRITE[] = {
+const uint8_t NUMBER_NINE_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -425,7 +452,7 @@ const uint8_t NUMBER_NINE_SPRITE[] = {
     0x00,
 };
 
-const uint8_t COLON_SPRITE[] = {
+const uint8_t COLON_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -448,7 +475,7 @@ const uint8_t COLON_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_A_SPRITE[] = {
+const uint8_t LETTER_A_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -471,7 +498,7 @@ const uint8_t LETTER_A_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_B_SPRITE[] = {
+const uint8_t LETTER_B_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -494,7 +521,7 @@ const uint8_t LETTER_B_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_C_SPRITE[] = {
+const uint8_t LETTER_C_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -517,7 +544,7 @@ const uint8_t LETTER_C_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_D_SPRITE[] = {
+const uint8_t LETTER_D_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -540,7 +567,7 @@ const uint8_t LETTER_D_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_E_SPRITE[] = {
+const uint8_t LETTER_E_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -563,7 +590,7 @@ const uint8_t LETTER_E_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_F_SPRITE[] = {
+const uint8_t LETTER_F_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -586,7 +613,7 @@ const uint8_t LETTER_F_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_G_SPRITE[] = {
+const uint8_t LETTER_G_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -609,7 +636,7 @@ const uint8_t LETTER_G_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_H_SPRITE[] = {
+const uint8_t LETTER_H_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -632,7 +659,7 @@ const uint8_t LETTER_H_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_I_SPRITE[] = {
+const uint8_t LETTER_I_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -655,7 +682,7 @@ const uint8_t LETTER_I_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_J_SPRITE[] = {
+const uint8_t LETTER_J_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -678,7 +705,7 @@ const uint8_t LETTER_J_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_K_SPRITE[] = {
+const uint8_t LETTER_K_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -701,7 +728,7 @@ const uint8_t LETTER_K_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_L_SPRITE[] = {
+const uint8_t LETTER_L_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -724,7 +751,7 @@ const uint8_t LETTER_L_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_M_SPRITE[] = {
+const uint8_t LETTER_M_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -747,7 +774,7 @@ const uint8_t LETTER_M_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_N_SPRITE[] = {
+const uint8_t LETTER_N_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -770,7 +797,7 @@ const uint8_t LETTER_N_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_O_SPRITE[] = {
+const uint8_t LETTER_O_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -793,7 +820,7 @@ const uint8_t LETTER_O_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_P_SPRITE[] = {
+const uint8_t LETTER_P_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -816,7 +843,7 @@ const uint8_t LETTER_P_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_Q_SPRITE[] = {
+const uint8_t LETTER_Q_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -839,7 +866,7 @@ const uint8_t LETTER_Q_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_R_SPRITE[] = {
+const uint8_t LETTER_R_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -862,7 +889,7 @@ const uint8_t LETTER_R_SPRITE[] = {
     0x00,
 };
 
-const uint8_t LETTER_S_SPRITE[] = {
+const uint8_t LETTER_S_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -885,7 +912,7 @@ const uint8_t LETTER_S_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_T_SPRITE[] = {
+const uint8_t LETTER_T_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -908,7 +935,7 @@ const uint8_t LETTER_T_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_U_SPRITE[] = {
+const uint8_t LETTER_U_SPRITE[] PROGMEM = {
     5,
     7,
     0x01,
@@ -931,7 +958,7 @@ const uint8_t LETTER_U_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_V_SPRITE[] = {
+const uint8_t LETTER_V_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -954,7 +981,7 @@ const uint8_t LETTER_V_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_W_SPRITE[] = {
+const uint8_t LETTER_W_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -977,7 +1004,7 @@ const uint8_t LETTER_W_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_X_SPRITE[] = {
+const uint8_t LETTER_X_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -1000,7 +1027,7 @@ const uint8_t LETTER_X_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_Y_SPRITE[] = {
+const uint8_t LETTER_Y_SPRITE[] PROGMEM = {
     5,
     7,
     0x00,
@@ -1023,7 +1050,7 @@ const uint8_t LETTER_Y_SPRITE[] = {
     0x10,
 };
 
-const uint8_t LETTER_Z_SPRITE[] = {
+const uint8_t LETTER_Z_SPRITE[] PROGMEM = {
     5,
     7,
     0x11,
@@ -1046,7 +1073,7 @@ const uint8_t LETTER_Z_SPRITE[] = {
     0x10,
 };
 
-const uint8_t UNDERSCORE_SPRITE[] = {
+const uint8_t UNDERSCORE_SPRITE[] PROGMEM = {
     5,
     8,
     0x10,

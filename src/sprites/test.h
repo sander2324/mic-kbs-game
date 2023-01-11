@@ -1,11 +1,11 @@
-const uint16_t TEST_COLORS[] = {
+const uint16_t TEST_COLORS[] PROGMEM = {
     0xFFFF,
     0xFFFF,
     0xFFE0,
     0x0000,
 };
 
-const uint8_t TEST_SPRITE[] = {
+const uint8_t TEST_SPRITE[] PROGMEM = {
     8,
     8,
     0x11,
