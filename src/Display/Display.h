@@ -89,7 +89,8 @@ class DisplayClass {
             const uint16_t* colors,
             uint16_t x,
             uint16_t y,
-            uint8_t scale = 1
+            uint8_t scale = 1,
+            bool mirrored = false
         );
         void draw_text(
             const char* text,

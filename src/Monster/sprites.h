@@ -12,6 +12,17 @@ const uint16_t SLIME_COLORS[] = {
     0x0000,
 };
 
+const uint16_t RED_SLIME_COLORS[] = {
+    0xFFFF,
+    0x6904,
+    0xA1C5,
+    0xB2EA,
+    0x9A48,
+    0xE73C,
+    0xFDBC,
+    0x0000,
+};
+
 const uint8_t SLIME_SPRITE[] = {
     16,
     16,

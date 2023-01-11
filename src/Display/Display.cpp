@@ -269,7 +269,8 @@ void DisplayClass::draw_sprite(
     const uint16_t* colors,
     uint16_t x,
     uint16_t y,
-    uint8_t scale = 1
+    uint8_t scale = 1,
+    bool mirrored = false
 ) {
     // The maximum values (exclusive) of the x and y positions of the sprite
     // const uint16_t x_end = x + sprite[0];  // Sprite[0] == Sprite width
@@ -303,13 +304,23 @@ void DisplayClass::draw_sprite(
             // If the SPRITE_TRANSPARENT_COLOR is found, skip drawing on this pixel
             if (colors[color_index] != SPRITE_TRANSPARENT_COLOR) {
                 // this->draw_pixel(current_x, current_y, colors[color_index]);
-                this->draw_rectangle(
-                    x + (relative_x * scale),
-                    y + (relative_y * scale),
-                    x + (relative_x * scale) + scale - 1,
-                    y + (relative_y * scale) + scale - 1,
-                    colors[color_index]
-                );
+                if (mirrored) {
+                    this->draw_rectangle(
+                        (sprite[0] + x - 1) - (relative_x * scale),
+                        y + (relative_y * scale),
+                        (sprite[0] + x - 1) - (relative_x * scale) + scale - 1,
+                        y + (relative_y * scale) + scale - 1,
+                        colors[color_index]
+                    );
+                } else {
+                    this->draw_rectangle(
+                        x + (relative_x * scale),
+                        y + (relative_y * scale),
+                        x + (relative_x * scale) + scale - 1,
+                        y + (relative_y * scale) + scale - 1,
+                        colors[color_index]
+                    );
+                }
             }
 
             // We finished drawing the pixel, so continue to the next one
