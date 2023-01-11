@@ -121,6 +121,10 @@ int main() {
     Move JUMP_MOVE = Move("JUMP ATK",20,85,0);
     Move DISSOLVE_MOVE = Move("DISSOLVE",30,80,0);
     Move FIRE_BREATH_MOVE = Move("FIRE BREATH",30,80,0);
+    Move SCRATCH_MOVE = Move("SCRATCH",20,90,0);
+    Move FELINE_FRENZY_MOVE = Move("FELINE FRENZY",60,40,0);
+    Move WHISKER_WHIP_MOVE = Move("WHISKER WHIP", 15, 80, 0);
+    Move POUNCE_MOVE = Move("POUNCE",30,80,0);
 
     uint8_t move_selected = 0;
 
@@ -145,6 +149,7 @@ int main() {
     GameState stage = MAIN_MENU;
     Move slime_moveset[] = {POUND_MOVE, JUMP_MOVE, QUICK_ATTACK_MOVE, DISSOLVE_MOVE};
     Move fire_slime_moveset[] = {POUND_MOVE, JUMP_MOVE, FIRE_BREATH_MOVE, DISSOLVE_MOVE};
+    Move kitty_moveset[] = {POUNCE_MOVE, FELINE_FRENZY_MOVE, WHISKER_WHIP_MOVE, SCRATCH_MOVE};
     Monster player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
     Monster player_two = Monster(MonsterKind::FIRE_SLIME_MONSTER, fire_slime_moveset);
     uint16_t right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT/2)-20;
@@ -244,17 +249,6 @@ int main() {
                     1,
                     COLOR_RED
                 );
-
-
-                Display.draw_border(
-                    16 + ((move_selected % 2) * right_moves_x_offset),
-                    16 + (bottom_moves_y_offset - (floor(move_selected / 2) * bottom_moves_y_offset)),
-                    (20+right_moves_x_offset) - 5 + ((move_selected % 2) * right_moves_x_offset),
-                    (60-bottom_moves_y_offset) + 17 + (bottom_moves_y_offset - (floor(move_selected / 2) * bottom_moves_y_offset)),
-                    2,
-                    1,
-                    COLOR_RED
-                ); // why is this here? good question. try removing it and selecting a move without toggling the joystick. that's why it's here.
 
                 while (true) {
                     Nunchuck.fetch_state();

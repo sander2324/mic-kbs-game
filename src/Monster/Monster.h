@@ -11,6 +11,7 @@
 enum MonsterKind {
     SLIME_MONSTER,
     FIRE_SLIME_MONSTER,
+    KITTY_MONSTER,
 };
 
 class Monster {

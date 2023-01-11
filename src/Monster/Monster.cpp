@@ -20,6 +20,15 @@ Monster::Monster(MonsterKind monster_kind, Move* moveset) {
             this->current_health = 100;
             break; // Stats
         }
+        case MonsterKind::KITTY_MONSTER: {
+            this->name = "KITTY";
+            this->moveset = moveset;
+            this->sprite = KITTY_SPRITE;
+            this->sprite_colors = KITTY_COLORS;
+            this->max_health = 100;
+            this->current_health = 100;
+            break; // Stats
+        }
     }
 }
 
