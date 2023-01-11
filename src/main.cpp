@@ -82,7 +82,7 @@ void draw_health_bar(Monster monster, uint16_t x, uint16_t y, uint16_t width) {
 void draw_monster_info(Monster monster, uint16_t x, uint16_t y) {
     Display.draw_rectangle(x+4, y-46, x+146, y-4, COLOR_WHITE);
     Display.draw_rectangle(x+4, y-29, x+146, y-28, COLOR_RED);
-    Display.draw_rectangle(x+4, y-46, x+146, y-31, COLOR_RED);
+    Display.draw_rectangle(x+4, y-46, x+146, y-32, COLOR_RED);
     Display.draw_border(x,y-50, x+150, y, 4, 1, COLOR_BLACK);
     Display.draw_text(monster.name, x+8, y-20, FONT_SPRITES, 2, COLOR_BLACK);
     Display.draw_rectangle(x+30, y-35, x+127, y-27, COLOR_DARK_GRAY);
@@ -118,7 +118,7 @@ int main() {
     Move QUICK_ATTACK_MOVE = Move("QUICK ATK",15,90,0);
     Move POUND_MOVE = Move("POUND",40,40,0);
     Move SHIELD_MOVE = Move("SHIELD",0,70,100);
-    Move JUMP_MOVE = Move("JUMP",0,80,90);
+    Move JUMP_MOVE = Move("JUMP ATK",20,85,0);
     Move DISSOLVE_MOVE = Move("DISSOLVE",30,80,0);
     Move FIRE_BREATH_MOVE = Move("FIRE BREATH",30,80,0);
 
@@ -152,6 +152,7 @@ int main() {
     while (true) {
         switch(stage) {
             case DEATH:
+                _delay_ms(1000);
                 for (uint8_t i = 0; i < 16; i++) {
                     Display.invert_colors();
                     _delay_ms(75);
@@ -169,7 +170,7 @@ int main() {
                 }
                 break;
             case WIN:
-                _delay_ms(500);
+                _delay_ms(1000);
                 for (uint8_t i = 0; i < 16; i++) {
                     Display.invert_colors();
                     _delay_ms(75);
@@ -188,7 +189,7 @@ int main() {
                 break;
             case MAIN_MENU:
                 // main menu
-                Display.draw_centered_text("Game Name(tm)", 130, FONT_SPRITES, 3, COLOR_RED);
+                Display.draw_centered_text("TASMON(tm)", 130, FONT_SPRITES, 3, COLOR_RED);
                 Display.draw_centered_text("PRESS Z TO START", 100, FONT_SPRITES, 2, COLOR_LIGHT_GRAY);
                 _delay_ms(500);
                 wait_for_z();
@@ -204,7 +205,11 @@ int main() {
 
                 Display.draw_sprite(player_one.sprite, player_one.sprite_colors, 25, 100, 5);
 
+                //Display.draw_rectangle(25,100,25+16*5, 100+16*5, COLOR_RED);
+
                 Display.draw_sprite(player_two.sprite, player_two.sprite_colors, 250, 150, 5, true);
+
+                // Display.draw_rectangle(250,150,250+16*5, 150+16*5, COLOR_RED);
 
 
                 draw_monster_info(player_one, DISPLAY_ROW_PIXEL_AMOUNT-150, DISPLAY_COLUMN_PIXEL_AMOUNT-100);
@@ -327,6 +332,26 @@ int main() {
                     if (player_one.moveset[move_selected].power > 0) {
                         player_two.current_health = player_two.current_health-player_one.moveset[move_selected].power;
                         draw_health_bar(player_two, 46, DISPLAY_COLUMN_PIXEL_AMOUNT-10-28, 80);
+
+                        //Display.draw_rectangle(190,150,190+16*5, 150+16*5, COLOR_GREEN);
+                        //_delay_ms(1000);
+                        Display.draw_sprite(player_two.sprite, CLEAR_SLIME_COLORS, 250, 150, 5, true);
+                        Display.draw_sprite(player_two.sprite, player_two.sprite_colors, 260, 150, 5, true);
+                        _delay_ms(50);
+                        //Display.draw_rectangle(200,150,200+16*5, 150+16*5, COLOR_GREEN);
+                        //_delay_ms(1000);
+                        Display.draw_sprite(player_two.sprite, CLEAR_SLIME_COLORS, 260, 150, 5, true);
+                        Display.draw_sprite(player_two.sprite, player_two.sprite_colors, 250, 150, 5, true);
+                        _delay_ms(50);
+                        //Display.draw_rectangle(190,150,190+16*5, 150+16*5, COLOR_GREEN);
+                        //_delay_ms(1000);
+                        Display.draw_sprite(player_two.sprite, CLEAR_SLIME_COLORS, 250, 150, 5, true);
+                        Display.draw_sprite(player_two.sprite, player_two.sprite_colors, 240, 150, 5, true);
+                        _delay_ms(50);
+                        //Display.draw_rectangle(180,150,180+16*5, 150+16*5, COLOR_GREEN);
+                        //_delay_ms(1000);
+                        Display.draw_sprite(player_two.sprite, CLEAR_SLIME_COLORS, 240, 150, 5, true);
+                        Display.draw_sprite(player_two.sprite, player_two.sprite_colors, 250, 150, 5, true);
                         if (player_two.current_health <= 0) {
                             stage = WIN;
                             break;
