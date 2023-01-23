@@ -25,6 +25,7 @@
 #include "Monster/monster_moves.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
+#include "PersistentStorage/PersistentStorage.h"
 
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
@@ -49,6 +50,7 @@ void initialize() {
     init_twi();
     Display.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
+    PersistentStorage.begin();
 }
 
 void draw_move(Move move, uint16_t x, uint16_t y) {
