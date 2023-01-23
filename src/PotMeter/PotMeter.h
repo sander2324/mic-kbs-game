@@ -15,6 +15,7 @@ public:
 private:
     void setPWM(uint8_t inputByte,bool reset);
     /* data */
+    uint8_t currentBrightness;
 };
 
 extern PotMeterClass PotMeter;

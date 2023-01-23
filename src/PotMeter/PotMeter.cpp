@@ -19,9 +19,11 @@ void PotMeterClass::setBacklightPinRaw(int input) {
     if (input==1) {
         DDRD |= (1<<PORTD3);
         PORTD |= (1<<PORTD3);
+        this->currentBrightness = 255;
     } else {
         DDRD |= (1<<PORTD3);
         PORTD &= ~(1<<PORTD3);
+        this->currentBrightness = 0;
     }
     return;
 }
@@ -29,6 +31,7 @@ void PotMeterClass::setBacklightPinRaw(int input) {
 void PotMeterClass::setBacklightBrightness(uint8_t inputByte) {
     // Use a 0 - 255 value to control & check the PWM's signal.
     this->setPWM(inputByte,0);
+    this->currentBrightness = inputByte;
     return;
 }
 
