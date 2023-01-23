@@ -25,6 +25,7 @@
 #include "Monster/monster_moves.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
+#include "PotMeter/PotMeter.h"
 
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
@@ -49,6 +50,15 @@ void initialize() {
     init_twi();
     Display.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
+}
+
+// Semi-temp ISR loop for brightness controls.
+ISR(TIMER2_OVF_vect) {
+    PORTD |= (1<<PORTD3);
+}
+
+ISR(TIMER2_COMPA_vect) {
+    PORTD &= ~(1<<PORTD3);
 }
 
 void draw_move(Move move, uint16_t x, uint16_t y) {
@@ -201,7 +211,22 @@ int main() {
                 stage = START_BATTLE;
 
             case START_BATTLE:
+                // Temp bebug funtion, set Digital Pin 3 (PORTD3) to low, this should turn off the backlights.
+                PotMeter.setBacklightPinRaw(0);
+                _delay_ms(500);
+                // After 3 seconds, turn it back on.
+                PotMeter.setBacklightPinRaw(1);
                 Display.fill_screen(COLOR_GREEN);
+
+                // Test finer brightness control.
+                PotMeter.setBacklightBrightness(50);
+                _delay_ms(2000);
+                PotMeter.setBacklightBrightness(255);
+
+                _delay_ms(2000);
+
+                PORTD |= (1<<PORTD3);
+
                 //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
                 player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
                 player_two = Monster(MonsterKind::KITTY_MONSTER, kitty_moveset);
