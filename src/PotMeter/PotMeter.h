@@ -12,6 +12,10 @@ public:
     PotMeterClass();
     void setBacklightPinRaw(int input); // Set backlight on/off at full power.
     void setBacklightBrightness(uint8_t inputByte);
+    void checkPotmeterBrightness();
+    void prepareADC();
+    uint16_t rawADC;
+    bool adcReady;
 private:
     void setPWM(uint8_t inputByte,bool reset);
     /* data */

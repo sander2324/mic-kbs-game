@@ -59,4 +59,31 @@ void PotMeterClass::setPWM(uint8_t inputByte, bool reset) {
     return;
 }
 
+void PotMeterClass::prepareADC() {
+    // Prepare ADC block, use Interrupts.
+    ADMUX &= ~((1<<MUX3)|(1<<MUX2)|(1<<MUX1)|(1<<MUX0));
+    ADMUX |= (1<<REFS0);
+    ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
+    ADCSRA |= (1<<ADIE);
+    ADCSRA |= (1<<ADEN);
+    sei();
+
+    ADCSRA |= (1<<ADSC);
+
+    // For some reason it needs this, don't know why.
+                PotMeter.setBacklightPinRaw(0);
+                PotMeter.setBacklightPinRaw(1);
+}
+
+void PotMeterClass::checkPotmeterBrightness() {
+    if (this->adcReady) {
+        this->adcReady = false;
+        ADCSRA |= (1<<ADSC);
+        this->checkPotmeterBrightness(); // Recurtion due to it just not accepting the statement below in this If statement.
+    } else {
+        if ((this->rawADC/4)<4) {this->rawADC = 16;}
+        this->setBacklightBrightness((uint8_t)(this->rawADC/4));
+    }
+}
+
 PotMeterClass PotMeter = PotMeterClass();

@@ -50,6 +50,13 @@ void initialize() {
     init_twi();
     Display.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
+    PotMeter.prepareADC();
+}
+
+// ADC done/ready ISR.
+ISR(ADC_vect) {
+    PotMeter.rawADC = ADC;
+    PotMeter.adcReady = true;
 }
 
 // Semi-temp ISR loop for brightness controls.
@@ -165,6 +172,11 @@ int main() {
     uint16_t right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT / 2) - 20;
     uint16_t bottom_moves_y_offset = 30;
     while (true) {
+
+        // Temporary insert for change brightness.
+        PotMeter.checkPotmeterBrightness();
+        // Remove the lines above once main is reformatted to have a solid loop part.
+
         switch(stage) {
             case DEATH:
                 _delay_ms(1000);
@@ -211,21 +223,7 @@ int main() {
                 stage = START_BATTLE;
 
             case START_BATTLE:
-                // Temp bebug funtion, set Digital Pin 3 (PORTD3) to low, this should turn off the backlights.
-                PotMeter.setBacklightPinRaw(0);
-                _delay_ms(500);
-                // After 3 seconds, turn it back on.
-                PotMeter.setBacklightPinRaw(1);
                 Display.fill_screen(COLOR_GREEN);
-
-                // Test finer brightness control.
-                PotMeter.setBacklightBrightness(50);
-                _delay_ms(2000);
-                PotMeter.setBacklightBrightness(255);
-
-                _delay_ms(2000);
-
-                PORTD |= (1<<PORTD3);
 
                 //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
                 player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
