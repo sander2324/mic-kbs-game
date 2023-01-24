@@ -49,8 +49,8 @@ void initialize() {
     init_registers();
     init_twi();
     Display.begin();
-    Nunchuck.begin(NUNCHUCK_TWI_ADDR);
     PersistentStorage.begin();
+    Nunchuck.begin(NUNCHUCK_TWI_ADDR);
 }
 
 void draw_move(Move move, uint16_t x, uint16_t y) {
