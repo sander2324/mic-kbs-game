@@ -25,6 +25,7 @@
 #include "Monster/Move.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
+#include "PersistentStorage/PersistentStorage.h"
 
 #if NUNCHUCK_DEBUG
 #include <HardwareSerial.h>
@@ -48,6 +49,7 @@ void initialize() {
     init_registers();
     init_twi();
     Display.begin();
+    PersistentStorage.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
 }
 
