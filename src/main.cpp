@@ -22,7 +22,7 @@
 #include "Nunchuck/Nunchuck.h"
 #include "Display/Display.h"
 #include "Monster/Monster.h"
-#include "Monster/monster_moves.h"
+#include "Monster/Move.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
 #include "PersistentStorage/PersistentStorage.h"
@@ -117,17 +117,6 @@ void concat(char* string_one, char* string_two) {
 }
 
 int main() {
-    Move QUICK_ATTACK_MOVE = Move("QUICK ATK", 15, 90, 0);
-    Move POUND_MOVE = Move("POUND", 40, 40, 0);
-    Move SHIELD_MOVE = Move("SHIELD", 0, 70, 100);
-    Move JUMP_MOVE = Move("JUMP ATK", 20, 85, 0);
-    Move DISSOLVE_MOVE = Move("DISSOLVE", 30, 80, 0);
-    Move FIRE_BREATH_MOVE = Move("FIRE BREATH", 30, 80, 0);
-    Move SCRATCH_MOVE = Move("SCRATCH", 20, 90, 0);
-    Move FELINE_FRENZY_MOVE = Move("FELINE FRENZY", 60, 40, 0);
-    Move WHISKER_WHIP_MOVE = Move("WHISKER WHIP", 15, 80, 0);
-    Move POUNCE_MOVE = Move("POUNCE", 30, 80, 0);
-
     uint8_t move_selected = 0;
 
     initialize();
@@ -149,11 +138,8 @@ int main() {
     };
 
     GameState stage = MAIN_MENU;
-    Move slime_moveset[] = {POUND_MOVE, JUMP_MOVE, QUICK_ATTACK_MOVE, DISSOLVE_MOVE};
-    Move fire_slime_moveset[] = {POUND_MOVE, JUMP_MOVE, FIRE_BREATH_MOVE, DISSOLVE_MOVE};
-    Move kitty_moveset[] = {POUNCE_MOVE, FELINE_FRENZY_MOVE, WHISKER_WHIP_MOVE, SCRATCH_MOVE};
-    Monster player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
-    Monster player_two = Monster(MonsterKind::KITTY_MONSTER, kitty_moveset);
+    Monster player_one = Monster(MonsterKind::SLIME_MONSTER, SLIME_MOVESET);
+    Monster player_two = Monster(MonsterKind::KITTY_MONSTER, KITTY_MOVESET);
     uint16_t right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT / 2) - 20;
     uint16_t bottom_moves_y_offset = 30;
     while (true) {
@@ -205,8 +191,8 @@ int main() {
             case START_BATTLE:
                 Display.fill_screen(COLOR_GREEN);
                 //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
-                player_one = Monster(MonsterKind::SLIME_MONSTER, slime_moveset);
-                player_two = Monster(MonsterKind::KITTY_MONSTER, kitty_moveset);
+                player_one = Monster(MonsterKind::SLIME_MONSTER, SLIME_MOVESET);
+                player_two = Monster(MonsterKind::KITTY_MONSTER, KITTY_MOVESET);
                 right_moves_x_offset = floor(DISPLAY_ROW_PIXEL_AMOUNT / 2)-20;
                 bottom_moves_y_offset = 30;
 

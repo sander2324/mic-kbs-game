@@ -1,6 +1,7 @@
 #include "Monster.h"
 
-Monster::Monster(MonsterKind monster_kind, Move* moveset) {
+
+Monster::Monster(MonsterKind monster_kind, const Move* moveset) {
     switch (monster_kind) {
         case MonsterKind::SLIME_MONSTER: {
             this->name = "SLIME";
