@@ -26,7 +26,7 @@ void PersistentStorageClass::set_game_settings(GameSettings settings) {
 }
 
 
-const char* PersistentStorageClass::get_player_name(char* player_name) {
+void PersistentStorageClass::get_player_name(char* player_name) {
     uint8_t index;
     for (index = 0; index < PLAYER_NAME_MAX_LENGTH; index += 1) {
         const char current_char = EEPROM.read(index + PLAYER_NAME_INDEX);

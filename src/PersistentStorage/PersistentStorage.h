@@ -27,7 +27,7 @@ class PersistentStorageClass {
         GameSettings get_game_settings();
         void set_game_settings(GameSettings settings);
 
-        const char* get_player_name(char* player_name);
+        void get_player_name(char* player_name);
         void set_player_name(const char* name);
 
         uint16_t get_most_consecutive_wins();
