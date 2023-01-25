@@ -1,6 +1,9 @@
 #include "Infrared.h"
 #include <avr/io.h>
+<<<<<<< HEAD
 #include <avr/interrupt.h>
+=======
+>>>>>>> create IR library
 
 #define BIT0 60
 #define BIT1 120
@@ -14,7 +17,11 @@ volatile bool is_sending = false;
 volatile int bit = 0;
 
 volatile uint16_t time_receive = 0;
+<<<<<<< HEAD
 volatile bool done_receiving = false;
+=======
+volatile bool receiving_done = false;
+>>>>>>> create IR library
 volatile bool received_start_bit = false;
 volatile uint16_t receive_data = 0;
 volatile uint16_t bit_location = 0;
@@ -47,7 +54,11 @@ void send_bit() {
     if (data) {
         OCR0A = (data & 1) ? BIT1 : BIT0;
     } else {
+<<<<<<< HEAD
         if ((bit % 2) == 1 && OCR0A == BIT_STOP) { // has stop bit been sent
+=======
+        if ((bit % 2) == 1 && OCR0A == BIT_STOP) { // has stop bit been SENT
+>>>>>>> create IR library
             TCCR0B &= ~((1 << CS02) | (1 << CS01) | (1 << CS00)); // disable timer
 
             data = 0;
@@ -73,7 +84,11 @@ void receive_bit() {
 
     if (received_start_bit) {
         if (is_bit(BIT_STOP)) {
+<<<<<<< HEAD
             done_receiving = true;
+=======
+            receiving_done = true;
+>>>>>>> create IR library
             received_start_bit = false;
         } else if (is_bit(BIT1)) {
             receive_data |= (1 << bit_location);
@@ -85,8 +100,13 @@ void receive_bit() {
 }
 
 uint16_t receive_ir() {
+<<<<<<< HEAD
     if (done_receiving) {
         done_receiving = false;
+=======
+    if (receiving_done) {
+        receiving_done = false;
+>>>>>>> create IR library
         bit_location = 0;
         uint16_t ir_data = receive_data;
         receive_data = 0;
@@ -158,6 +178,7 @@ void ir_setup(int client) {
     }
 }
 
+<<<<<<< HEAD
 ISR(TIMER0_COMPA_vect) {
     send_bit();
 
@@ -181,3 +202,5 @@ ISR(INT0_vect)
         receive_bit(); // process bit
     }
 }
+=======
+>>>>>>> create IR library
