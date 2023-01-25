@@ -1,5 +1,6 @@
 #include "Infrared.h"
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define BIT0 60
 #define BIT1 120
@@ -13,7 +14,7 @@ volatile bool is_sending = false;
 volatile int bit = 0;
 
 volatile uint16_t time_receive = 0;
-volatile bool receiving_done = false;
+volatile bool done_receiving = false;
 volatile bool received_start_bit = false;
 volatile uint16_t receive_data = 0;
 volatile uint16_t bit_location = 0;
@@ -46,7 +47,7 @@ void send_bit() {
     if (data) {
         OCR0A = (data & 1) ? BIT1 : BIT0;
     } else {
-        if ((bit % 2) == 1 && OCR0A == BIT_STOP) { // has stop bit been SENT
+        if ((bit % 2) == 1 && OCR0A == BIT_STOP) { // has stop bit been sent
             TCCR0B &= ~((1 << CS02) | (1 << CS01) | (1 << CS00)); // disable timer
 
             data = 0;
@@ -72,7 +73,7 @@ void receive_bit() {
 
     if (received_start_bit) {
         if (is_bit(BIT_STOP)) {
-            receiving_done = true;
+            done_receiving = true;
             received_start_bit = false;
         } else if (is_bit(BIT1)) {
             receive_data |= (1 << bit_location);
@@ -84,8 +85,8 @@ void receive_bit() {
 }
 
 uint16_t receive_ir() {
-    if (receiving_done) {
-        receiving_done = false;
+    if (done_receiving) {
+        done_receiving = false;
         bit_location = 0;
         uint16_t ir_data = receive_data;
         receive_data = 0;
@@ -157,3 +158,26 @@ void ir_setup(int client) {
     }
 }
 
+ISR(TIMER0_COMPA_vect) {
+    send_bit();
+
+}
+
+ISR(TIMER1_OVF_vect)
+{
+    // clear timer 1
+    TCCR1A = 0;
+    TCCR1B = 0;
+
+    time_receive = BIT_STOP + 1;
+}
+
+ISR(INT0_vect)
+{
+    if (!done_receiving)
+    {
+        time_receive = TCNT1; // receive time as measured by timer
+        timer1_init(); // start measuring time
+        receive_bit(); // process bit
+    }
+}
