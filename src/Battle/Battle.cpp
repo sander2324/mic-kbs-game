@@ -64,7 +64,12 @@ void wait_for_z() {
 Battle::Battle(BattlePlayer user, BattlePlayer opponent) : user(user), opponent(opponent) {};
 
 
-void Battle::tick() {  // TODO: This should only contain the battle logic. Nothing else
+void Battle::tick() {
+    // TODO
+}
+
+
+void Battle::loop() {  // TODO: This should only contain the battle logic. Nothing else
     switch(this->stage) {
         case DEATH:
             _delay_ms(1000);

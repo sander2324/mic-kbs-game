@@ -42,6 +42,7 @@ enum BattleState {
 class Battle {
     public:
         Battle(BattlePlayer user, BattlePlayer opponent);
+        void loop();
         void tick();
 
     private:
