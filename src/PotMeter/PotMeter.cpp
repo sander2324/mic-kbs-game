@@ -66,11 +66,12 @@ void PotMeterClass::prepareADC() {
     ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
     ADCSRA |= (1<<ADIE);
     ADCSRA |= (1<<ADEN);
-    sei();
+    sei(); // Just to be sure.
 
     ADCSRA |= (1<<ADSC);
 
     // For some reason it needs this, don't know why.
+    // I assume it's to empty the capacitors the screen uses to stay a bit more stable.
                 PotMeter.setBacklightPinRaw(0);
                 PotMeter.setBacklightPinRaw(1);
 }
@@ -79,7 +80,7 @@ void PotMeterClass::checkPotmeterBrightness() {
     if (this->adcReady) {
         this->adcReady = false;
         ADCSRA |= (1<<ADSC);
-        this->checkPotmeterBrightness(); // Recurtion due to it just not accepting the statement below in this If statement.
+        this->checkPotmeterBrightness(); // Recursion due to it just not accepting the statement below in this If statement.
     } else {
         if ((this->rawADC/4)<4) {this->rawADC = 16;}
         this->setBacklightBrightness((uint8_t)(this->rawADC/4));
