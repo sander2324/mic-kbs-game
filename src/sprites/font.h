@@ -1,3 +1,8 @@
+#ifndef FONT_H
+#define FONT_H
+
+#include <avr/pgmspace.h>
+
 #define FONT_TRANSPARENT_COLOR 0xFFFF
 
 const uint16_t FONT_FG_BLACK_BG_TRANS[] PROGMEM = {
@@ -1098,7 +1103,7 @@ const uint8_t UNDERSCORE_SPRITE[] PROGMEM = {
     0x00,
 };
 
-const uint8_t* FONT_SPRITES[] = {
+static const uint8_t* FONT_SPRITES[] = {
     SPACE_SPRITE, //
     EXCLAMATION_MARK_SPRITE,    // !
     QUESTION_MARK_SPRITE,       // "
@@ -1164,3 +1169,5 @@ const uint8_t* FONT_SPRITES[] = {
     QUESTION_MARK_SPRITE,       // ^
     UNDERSCORE_SPRITE,          // _
 };
+
+#endif

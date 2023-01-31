@@ -26,8 +26,10 @@ add_executable(${PROJECT_NAME}
     src/Nunchuck/Nunchuck.cpp
     src/Display/Display.cpp
     src/Monster/Monster.cpp
-    src/Monster/monster_moves.cpp
     src/PotMeter/PotMeter.cpp
+    src/Monster/Move.cpp
+    src/PersistentStorage/PersistentStorage.cpp
+    src/Battle/Battle.cpp
 )
 
 # Add arduino core library
