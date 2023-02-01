@@ -16,6 +16,7 @@
 #include "Monster/Move.h"
 #include "sprites/font.h"
 #include "sprites/test.h"
+#include "PotMeter/PotMeter.h"
 #include "PersistentStorage/PersistentStorage.h"
 #include "Battle/Battle.h"
 
@@ -76,8 +77,23 @@ void initialize() {
     Display.begin();
     PersistentStorage.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
+    PotMeter.prepareADC();
 }
 
+// ADC done/ready ISR.
+ISR(ADC_vect) {
+    PotMeter.rawADC = ADC;
+    PotMeter.adcReady = true;
+}
+
+// Semi-temp ISR loop for brightness controls.
+ISR(TIMER2_OVF_vect) {
+    PORTD |= (1<<PORTD3);
+}
+
+ISR(TIMER2_COMPA_vect) {
+    PORTD &= ~(1<<PORTD3);
+}
 
 int main() {
     initialize();
@@ -99,12 +115,18 @@ int main() {
 
     Battle current_battle = Battle(user, opponent);
     while (true) {
+
         if (timer0_compa_hit) {
             timer0_compa_hit = false;
             supercounter += 1;
 
+
         }
         current_battle.loop();
+        
+        // Temporary insert for change brightness.
+        PotMeter.checkPotmeterBrightness();
+        // Remove the lines above once main is reformatted to have a solid loop part.
     }
 
 #if NUNCHUCK_DEBUG
