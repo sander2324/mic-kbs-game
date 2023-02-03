@@ -7,7 +7,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
     set(AVR_PORT /dev/ttyACM0)
 elseif(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
     set(ARDUINO_PATH "$ENV{HOMEDRIVE}$ENV{HOMEPATH}/Arduino")
-    set(AVR_PORT COM3)
+    set(AVR_PORT COM6)
 endif()
 
 # the toolchain to use
@@ -30,6 +30,9 @@ add_executable(${PROJECT_NAME}
     src/Monster/Move.cpp
     src/PersistentStorage/PersistentStorage.cpp
     src/Battle/Battle.cpp
+    src/Infrared/Infrared.cpp
+    src/SuperCounter/SuperCounter.cpp
+    src/SegmentDisplay/SegmentDisplay.cpp
 )
 
 # Add arduino core library

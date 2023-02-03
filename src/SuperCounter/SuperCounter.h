@@ -8,7 +8,7 @@
 #define TIMER0_COMPA_VAL 249
 
 
-volatile uint32_t supercounter;
+extern volatile uint32_t supercounter;
 void init_supercounter();
 
 #endif
