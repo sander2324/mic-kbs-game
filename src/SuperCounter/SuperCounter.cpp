@@ -1,9 +1,6 @@
 #include "SuperCounter.h"
 
 
-volatile uint32_t supercounter = 0;
-
-
 ISR(TIMER0_COMPA_vect) {
     supercounter += 1;
 }
@@ -11,6 +8,7 @@ ISR(TIMER0_COMPA_vect) {
 
 // Set Timer0 to trigger TIMER0_COMPA interrupt every 1 millisecond
 void init_supercounter() {
+    supercounter = 0;
     // Set Timer0 to wave generation mode 2 (CTC)
     TCCR0A |= (1 << WGM00) | (1 << WGM01);
     TCCR0B &= ~(1 << WGM02);
