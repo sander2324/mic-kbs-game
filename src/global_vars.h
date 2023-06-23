@@ -1,0 +1,17 @@
+#ifndef GLOBAL_VARS_H
+#define GLOBAL_VARS_H
+
+// colors
+#define COLOR_RED 0xF800
+#define COLOR_ORANGE 0xFC00
+#define COLOR_YELLOW 0xFFE0
+#define COLOR_GREEN 0x07E0
+#define COLOR_LIGHT_GRAY 0xBDF7
+#define COLOR_GRAY 0x8410
+#define COLOR_DARK_GRAY 0x4208
+#define COLOR_WHITE 0xFFFE
+#define COLOR_BLACK 0x0000
+
+#define CHAR_WIDTH 6
+
+#endif

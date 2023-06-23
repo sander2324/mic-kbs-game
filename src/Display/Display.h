@@ -48,6 +48,8 @@
 #define SPRITE_INDEX_SECOND_PIXEL_MASK 0x0F
 #define SPRITE_INDEX_SECOND_PIXEL_SHIFT 0
 
+#define TEXT_DEFAULT_COLOR 0xFFFE
+
 class DisplayClass {
     public:
         DisplayClass();
@@ -65,18 +67,44 @@ class DisplayClass {
             uint16_t y_end,
             uint16_t color
         );
+        void DisplayClass::draw_border(
+            uint16_t x_start,
+            uint16_t y_start,
+            uint16_t x_end,
+            uint16_t y_end,
+            uint16_t thickness,
+            bool corner_rounding,
+            uint16_t color
+        );
         void draw_circle(
             uint16_t x,
             uint16_t y,
             uint16_t radius,
             uint16_t color
         );
+
         void invert_colors();
         void draw_sprite(
             const uint8_t* sprite,
             const uint16_t* colors,
             uint16_t x,
             uint16_t y,
+            uint8_t scale = 1,
+            bool mirrored = false
+        );
+        void draw_text(
+            const char* text,
+            uint16_t x,
+            uint16_t y,
+            const uint8_t** font,
+            const uint16_t* colors,
+            uint8_t scale = 1
+        );
+        void draw_centered_text(
+            const char* text,
+            uint16_t y,
+            const uint8_t** font,
+            const uint16_t* colors,
             uint8_t scale = 1
         );
 
