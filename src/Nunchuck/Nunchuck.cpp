@@ -77,6 +77,19 @@ bool NunchuckClass::state_changed() {
 }
 
 
+void NunchuckClass::wait_for_z() {
+    while (true) {
+        this->fetch_state();
+
+        if (!this->state_changed()) continue;
+
+        if (this->current_state.z_pressed) {
+            return;
+        }
+    }
+}
+
+
 #if NUNCHUCK_DEBUG
 const char* NunchuckClass::get_joystick_state_screen_name(NunchuckState state) {
     switch (state.joystick_state) {

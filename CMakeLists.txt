@@ -31,6 +31,7 @@ add_executable(${PROJECT_NAME}
     src/Monster/Move.cpp
     src/PersistentStorage/PersistentStorage.cpp
     src/Battle/Battle.cpp
+    src/Menu/Menu.cpp
 )
 
 # Add arduino core library

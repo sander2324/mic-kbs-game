@@ -2,23 +2,26 @@
 #define MONSTER_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "sprites.h"
 #include "Move.h"
 
 #define MONSTER_MAX_MOVE_AMOUNT 4
+#define MONSTER_KIND_COUNT 3
 
 
 enum MonsterKind {
-    SLIME_MONSTER,
-    FIRE_SLIME_MONSTER,
-    KITTY_MONSTER,
+    SLIME_MONSTER = 0,
+    FIRE_SLIME_MONSTER = 1,
+    KITTY_MONSTER = 2,
 };
 
 
 class Monster {
     public:
-        Monster(MonsterKind monster, const Move* moveset);
+        Monster(MonsterKind monster);
+        static Monster get_random();
         MonsterKind kind;
         const char* name;
         const Move* moveset;
