@@ -117,6 +117,10 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
             stage = START_BATTLE;
 
         case START_BATTLE:
+            // Reset monsters heatlh values
+            this->user.monster.current_health = this->user.monster.max_health;
+            this->opponent.monster.current_health = this->opponent.monster.max_health;
+
             Display.fill_screen(COLOR_GREEN);
             //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
 
@@ -236,7 +240,7 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
 
             if ((int)rand()%101 <= this->user.monster.moveset[move_selected].accuracy) {
                 if (this->user.monster.moveset[move_selected].power > 0) {
-                    this->opponent.monster.current_health = this->opponent.monster.current_health-this->user.monster.moveset[move_selected].power;
+                    this->opponent.monster.current_health = this->opponent.monster.current_health - this->user.monster.moveset[move_selected].power;
                     draw_health_bar(this->opponent.monster, 46, DISPLAY_COLUMN_PIXEL_AMOUNT-10-28, 80);
 
                     //Display.draw_rectangle(190,150,190+16*5, 150+16*5, COLOR_GREEN);

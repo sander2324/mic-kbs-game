@@ -61,6 +61,7 @@ ISR(TIMER2_COMPA_vect) {
     PORTD &= ~(1<<PORTD3);
 }
 
+
 int main() {
     initialize();
     Serial.begin(9600);
@@ -76,7 +77,7 @@ int main() {
     BattlePlayer opponent = {
         "OPPONENT",
         Monster(MonsterKind::KITTY_MONSTER, KITTY_MOVESET),
-        15
+        15,
     };
 
     Battle current_battle = Battle(user, opponent);
