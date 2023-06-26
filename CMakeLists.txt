@@ -32,6 +32,7 @@ add_executable(${PROJECT_NAME}
     src/PersistentStorage/PersistentStorage.cpp
     src/Battle/Battle.cpp
     src/Menu/Menu.cpp
+    src/Infrared/Infrared.cpp
 )
 
 # Add arduino core library

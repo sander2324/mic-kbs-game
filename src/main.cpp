@@ -46,6 +46,7 @@ void initialize() {
     PersistentStorage.begin();
     Nunchuck.begin(NUNCHUCK_TWI_ADDR);
     PotMeter.prepareADC();
+    Infrared.begin();
 }
 
 // ADC done/ready ISR.
