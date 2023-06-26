@@ -1,11 +1,11 @@
 #include "Monster.h"
 
 
-Monster::Monster(MonsterKind monster_kind, const Move* moveset) {
+Monster::Monster(MonsterKind monster_kind) {
     switch (monster_kind) {
         case MonsterKind::SLIME_MONSTER: {
             this->name = "SLIME";
-            this->moveset = moveset;
+            this->moveset = SLIME_MOVESET;
             this->sprite = SLIME_SPRITE;
             this->sprite_colors = SLIME_COLORS;
             this->max_health = 100;
@@ -14,7 +14,7 @@ Monster::Monster(MonsterKind monster_kind, const Move* moveset) {
         }
         case MonsterKind::FIRE_SLIME_MONSTER: {
             this->name = "FIRE SLIME";
-            this->moveset = moveset;
+            this->moveset = FIRE_SLIME_MOVESET;
             this->sprite = SLIME_SPRITE;
             this->sprite_colors = RED_SLIME_COLORS;
             this->max_health = 100;
@@ -23,7 +23,7 @@ Monster::Monster(MonsterKind monster_kind, const Move* moveset) {
         }
         case MonsterKind::KITTY_MONSTER: {
             this->name = "KITTY";
-            this->moveset = moveset;
+            this->moveset = KITTY_MOVESET;
             this->sprite = KITTY_SPRITE;
             this->sprite_colors = KITTY_COLORS;
             this->max_health = 100;
@@ -31,4 +31,10 @@ Monster::Monster(MonsterKind monster_kind, const Move* moveset) {
             break;
         }
     }
+}
+
+Monster Monster::get_random() {
+    return Monster(
+        (MonsterKind)(rand() % MONSTER_KIND_COUNT)
+    );
 }

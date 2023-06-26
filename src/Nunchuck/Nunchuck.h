@@ -44,6 +44,7 @@ class NunchuckClass {
         NunchuckState previous_state;
         void fetch_state();
         bool state_changed();
+        void wait_for_z();
 
     private:
         uint8_t twi_address;

@@ -1,6 +1,7 @@
 #ifndef SUPERCOUNTER_H
 #define SUPERCOUNTER_H
 
+#include <HardwareSerial.h>
 #include <stdint.h>
 #include <avr/interrupt.h>
 
@@ -8,7 +9,7 @@
 #define TIMER0_COMPA_VAL 249
 
 
-static volatile uint32_t supercounter;
+extern volatile uint32_t supercounter;
 void init_supercounter();
 
 #endif

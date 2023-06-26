@@ -25,7 +25,6 @@ struct BattlePlayer {
 
 
 enum BattleState {
-    MAIN_MENU,
     START_BATTLE,
     RENDER_MENU,
     SELECT_MOVE,
@@ -46,7 +45,7 @@ class Battle {
         void tick();
 
     private:
-        BattleState stage = MAIN_MENU;
+        BattleState stage = START_BATTLE;
         uint8_t move_selected = 0;
         BattlePlayer user;
         BattlePlayer opponent;

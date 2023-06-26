@@ -48,19 +48,6 @@ void draw_monster_info(Monster monster, uint16_t x, uint16_t y) {
 }
 
 
-void wait_for_z() {
-    while (true) {
-        Nunchuck.fetch_state();
-
-        if (!Nunchuck.state_changed()) continue;
-
-        if (Nunchuck.current_state.z_pressed) {
-            return;
-        }
-    }
-}
-
-
 Battle::Battle(BattlePlayer user, BattlePlayer opponent) : user(user), opponent(opponent) {};
 
 
@@ -107,19 +94,12 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
                 }
             }
             break;
-        case MAIN_MENU:
-            // main menu
-            Display.fill_screen(COLOR_BLACK);
-            Display.draw_centered_text("TASMON(tm)", 130, FONT_SPRITES, FONT_FG_RED_BG_TRANS, 3);
-            Display.draw_centered_text("PRESS Z TO START", 100, FONT_SPRITES, FONT_FG_LIGHT_GRAY_BG_TRANS, 2);
-            _delay_ms(500);
-            wait_for_z();
-            stage = START_BATTLE;
 
         case START_BATTLE:
-            // Reset monsters heatlh values
+            // Reset player monster healh value to max_health
             this->user.monster.current_health = this->user.monster.max_health;
-            this->opponent.monster.current_health = this->opponent.monster.max_health;
+            // Create new random monster for the new round
+            this->opponent.monster = Monster::get_random();
 
             Display.fill_screen(COLOR_GREEN);
             //Move slime_moveset[] = {DISSOLVE_MOVE, POUND_MOVE, SHIELD_MOVE, QUICK_ATTACK_MOVE};
@@ -267,13 +247,13 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
                         break;
                     } else {
                         _delay_ms(500);
-                        wait_for_z();
+                        Nunchuck.wait_for_z();
                         stage = SECOND_MOVE;
                     }
                 }
             } else {
                 _delay_ms(500);
-                wait_for_z();
+                Nunchuck.wait_for_z();
                 stage = FIRST_MISS;
             }
 
@@ -290,7 +270,7 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
                 Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT-13, 78, COLOR_WHITE);
                 Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
                 _delay_ms(500);
-                wait_for_z();
+                Nunchuck.wait_for_z();
                 stage = SECOND_MOVE;
             }
 
@@ -314,13 +294,13 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
                         break;
                     } else {
                         _delay_ms(500);
-                        wait_for_z();
+                        Nunchuck.wait_for_z();
                         stage = SELECT_MOVE;
                         break;
                     }
                 }
             } else {
-                wait_for_z();
+                Nunchuck.wait_for_z();
                 stage = SECOND_MISS;
             }
 
@@ -328,7 +308,7 @@ void Battle::loop() {  // TODO: This should only contain the battle logic. Nothi
             Display.draw_rectangle(12, 12, DISPLAY_ROW_PIXEL_AMOUNT - 13, 78, COLOR_WHITE);
             Display.draw_centered_text("BUT IT MISSED!", 40, FONT_SPRITES, FONT_FG_BLACK_BG_TRANS, 2);
             _delay_ms(500);
-            wait_for_z();
+            Nunchuck.wait_for_z();
             stage = SELECT_MOVE;
             break;
     }

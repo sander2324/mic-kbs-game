@@ -13,6 +13,7 @@
 #include "SuperCounter/SuperCounter.h"
 #include "Nunchuck/Nunchuck.h"
 #include "Display/Display.h"
+#include "Menu/Menu.h"
 #include "Monster/Monster.h"
 #include "Monster/Move.h"
 #include "sprites/font.h"
@@ -66,27 +67,34 @@ int main() {
     initialize();
     Serial.begin(9600);
 
+    Menu.draw_title();
+    MonsterKind player_monster_kind;
+    if (Nunchuck.current_state.c_pressed) {
+        player_monster_kind = MonsterKind::KITTY_MONSTER;
+    } else {
+        player_monster_kind = MonsterKind::SLIME_MONSTER;
+    }
+
+    srand(supercounter);  // Set random seed
+
     char player_name[PLAYER_NAME_ARRAY_LENGTH];
     PersistentStorage.get_player_name(player_name);
     BattlePlayer user = {
         player_name,
-        Monster(MonsterKind::SLIME_MONSTER, SLIME_MOVESET),
+        Monster(player_monster_kind),
         PersistentStorage.get_most_consecutive_wins(),
     };
 
     BattlePlayer opponent = {
         "OPPONENT",
-        Monster(MonsterKind::KITTY_MONSTER, KITTY_MOVESET),
+        Monster::get_random(),
         15,
     };
 
     Battle current_battle = Battle(user, opponent);
     while (true) {
         current_battle.loop();
-
-        // Temporary insert for change brightness.
         PotMeter.checkPotmeterBrightness();
-        // Remove the lines above once main is reformatted to have a solid loop part.
     }
 
 #if NUNCHUCK_DEBUG
