@@ -10,6 +10,7 @@
 
 #include "global_vars.h"
 
+#include "Infrared/Infrared.h"
 #include "SuperCounter/SuperCounter.h"
 #include "Nunchuck/Nunchuck.h"
 #include "Display/Display.h"
